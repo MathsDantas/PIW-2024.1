@@ -8,8 +8,11 @@ Uma loja online de vendas de livros usados
 ## :technologist: Membros da equipe
 
   500629 - Antônio Mateus Gonçalves de Souza - Design Digital
+  
   512278 - João Victor Bezerra dos Santos - Design Digital
+  
   493433 - Matheus Dantas Batista - Design Digital
+  
   471278 - Thais Lara Figeredo de Almeida - Design Digital
 
 ## :people_holding_hands: Papéis ou tipos de usuário da aplicação
