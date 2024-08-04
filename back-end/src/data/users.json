@@ -1,0 +1,29 @@
+[
+   {
+    "id": 1,
+     "name": "Matheus",
+    "email": "matheus@ufc.com",
+    "role": "admin"
+   },
+
+   {
+    "id": 2,
+    "name": "Thais",
+    "email": "thais@ufc.com",
+    "role": "user"
+   },
+
+  {
+    "id": 3,
+    "name": "Jão",
+    "email": "jao@ufc.com",
+    "role": "user"
+  },
+
+  {
+    "id": 4,
+    "name": "Tonhão",
+    "email": "tonho@ufc.com",
+    "role": "user"
+  }
+]
