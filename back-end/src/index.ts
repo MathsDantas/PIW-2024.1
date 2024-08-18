@@ -34,7 +34,7 @@ app.get('*', (req, res) => {
           <li>500629 - Antônio Mateus Gonçalves de Souza - Design Digital</li>
           <li>512278 - João Victor Bezerra dos Santos - Design Digital</li>
           <li>493433 - Matheus Dantas Batista - Design Digital</li>
-          <li>471278 - Thais Lara Figeredo de Almeida - Design Digital</li>
+          <li>471278 - Thais Lara Figeredo de Almeida (Usuária de Marvel)- Design Digital</li>
         </ul>
       </div>
     </body>
