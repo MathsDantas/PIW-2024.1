@@ -36,6 +36,10 @@ app.get('*', (req, res) => {
           <li>471278 - Thais Lara Figeredo de Almeida - Design Digital</li>
         </ul>
       </div>
+
+      <a href="http://localhost:3000/users">
+        <button>Usuários</button>
+      </a>
     </body>
     </html>
   `);
