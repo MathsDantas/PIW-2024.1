@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { Jwt } from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 
-declare namespace Express {
-    export interface Request {
-        user?: any;
-    }
+
+declare global {
+     namespace Express {
+        export interface Request {
+            user?: any;
+        }
+    }   
 }
-
 
 export function authenticateJWT(req: Request, res: Response, next: NextFunction){
     const authHeader = req.headers['authorization'] //Pega o Header que pode ter o Token
@@ -29,7 +31,7 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
         return res.status(403).json({
             status: 403,
             name: 'Forbidden Error',
-            menssage: 'Invalid token'
+            message: 'Invalid token'
         })
     }
 }

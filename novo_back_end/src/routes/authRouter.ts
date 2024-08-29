@@ -1,6 +1,6 @@
 import { Router } from "express";
 import bcrypt from 'bcryptjs'
-import { Jwt } from "jsonwebtoken";
+import * as jwt from 'jsonwebtoken';
 import { AppDataSource } from "../DataSource";
 import { User } from "../entity/User";
 
@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
 
     if(user && bcrypt.compareSync(password, user.password)) {
 
-        const token = jwt.sing({
+        const token = jwt.sign({
             userId: user.id,
             userRole: user.role
         }, 'meu_segredo_mais_importante', {expiresIn: '1h'} )
