@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs'
 import { authenticateJWT } from "../middleware/authMiddleware";
 
 const router = Router()
+
 router.use(authenticateJWT)
 
 router.post('/', async(req, res) => {  //Criar Usuário
