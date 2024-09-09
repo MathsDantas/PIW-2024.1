@@ -7,7 +7,7 @@ import { authenticateJWT } from "../middleware/authMiddleware";
 
 const router = Router()
 
-router.use(authenticateJWT)
+router.use(authenticateJWT) //bloqueia/desbloqueia todas as rotas
 
 router.post('/', async(req, res) => {  //Criar Usuário
     const {name, username, email, password, role} = req.body
