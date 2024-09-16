@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../pages/home.vue';
 import Login from '../pages/login.vue';
 import Postos from '../pages/Postos.vue';
+import registro from '@/pages/registro.vue';
 
 const routes = [
   {
@@ -19,6 +20,9 @@ const routes = [
     name: 'Postos',
     component: Postos,
   },
+  {
+    path: '/register', component: registro
+  }
 ];
 
 const router = createRouter({
