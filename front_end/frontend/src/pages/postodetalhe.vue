@@ -1,15 +1,13 @@
 <template>
     <div>
       <NavBar position="relative" />
-      <h2>Página dos Postos</h2>
-      <RouterLink to="/postos/1" >Posto 1</RouterLink>
+      <h2>Página do POSTO DE ALUGUEL 1</h2>
     </div>
     
   </template>
   
   <script>
   import NavBar from '@/components/NavBar.vue';
-import { RouterLink } from 'vue-router';
 
   export default {   //Caso a NavBar não apareça na parte superior ok simm:( 
   name: 'Postos',
