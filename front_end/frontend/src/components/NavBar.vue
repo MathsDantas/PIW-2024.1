@@ -1,7 +1,7 @@
 <template>
     <nav :class="['navbar', 'navbar-expand-lg', 'px-4', position]">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">byKeria</a>
+        <RouterLink to="/" class="navbar-brand">byKeria</RouterLink>
         <button 
           class="navbar-toggler" 
           type="button" 
@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
             <RouterLink to="/" class="nav-link">Home</RouterLink>
-            <a class="nav-link" href="#">Postos de Bikes</a>
+            <RouterLink to="/postos" class="nav-link" >Postos de Bikes</RouterLink>
             <RouterLink to="/login" class="nav-link">Login</RouterLink>
           </div>
         </div>
