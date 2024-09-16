@@ -1,24 +1,7 @@
 <template>
-<<<<<<< HEAD
   <div>
     <NavBar position="relative" />
-  </div>
 
-  <div class="login-container">
-    <form @submit.prevent="onSubmit">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input
-          type="email"
-          v-model="formData.email"
-          id="email"
-          required
-          placeholder="Digite seu email"
-        />
-=======
-  <NavBar position="relative" />
-
-  <div>
     <!-- Conteúdo principal -->
     <div class="login-container">
       <h2 class="fonte mb-4">Login</h2>
@@ -48,7 +31,7 @@
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto">
-          <button class="btn btn-light" type="button">Button</button>
+          <button class="btn btn-light" type="submit">Login</button>
         </div>
       </form>
 
@@ -89,72 +72,48 @@
           <button type="submit" class="btn btn-success">Register</button>
           <button type="button" class="btn btn-secondary ms-2" @click="showRegister = false">Cancel</button>
         </form>
->>>>>>> e4376c87c3da89e150e4b35964d17bf149c7ae0b
       </div>
 
-      <div class="form-group">
-        <label for="password">Senha:</label>
-        <input
-          type="password"
-          v-model="formData.password"
-          id="password"
-          required
-          placeholder="Digite sua senha"
-        />
+      <div class="create-account">
+        <p>Ainda não tem uma conta?</p>
+        <router-link to="/register">Criar conta</router-link>
       </div>
-
-      <div class="form-group">
-        <button type="submit">Login</button>
-      </div>
-    </form>
-
-    <div v-if="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
-<<<<<<< HEAD
-=======
-  </div>
-</template>
-
->>>>>>> e4376c87c3da89e150e4b35964d17bf149c7ae0b
-
-    <div class="create-account">
-      <p>Ainda não tem uma conta?</p>
-      <router-link to="/register">Criar conta</router-link>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
-import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
-// Definindo a interface para os dados do formulário
-interface LoginForm {
-  email: string;
-  password: string;
-}
+// Dados reativos
+const username = ref('');
+const password = ref('');
+const registerUsername = ref('');
+const registerPassword = ref('');
+const errorMessage = ref('');
+const showRegister = ref(false);
 
-// Dados reativos do formulário
-const formData = reactive<LoginForm>({
-  email: '',
-  password: ''
-});
-
-// Mensagem de erro
-const errorMessage = ref<string>('');
-
-const router = useRouter();
-
-// Função para tratar o submit do formulário
-const onSubmit = () => {
-  // Validação simples
-  if (formData.email === 'admin@example.com' && formData.password === 'password123') {
+// Função para tratar o submit do login
+const submitLogin = () => {
+  if (username.value === 'admin' && password.value === 'password') {
     alert('Login bem-sucedido!');
+    errorMessage.value = '';
     // Redirecionamento ou outra ação após o login
   } else {
     errorMessage.value = 'Credenciais inválidas. Tente novamente.';
+  }
+};
+
+// Função para tratar o submit do registro
+const submitRegister = () => {
+  if (registerUsername.value && registerPassword.value) {
+    alert('Registro bem-sucedido!');
+    registerUsername.value = '';
+    registerPassword.value = '';
+    showRegister.value = false;
+  } else {
+    alert('Por favor, preencha todos os campos.');
   }
 };
 </script>
@@ -224,5 +183,3 @@ const onSubmit = () => {
   text-decoration: underline;
 }
 </style>
-
-  
