@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div>
     <NavBar position="relative" />
   </div>
@@ -14,6 +15,81 @@
           required
           placeholder="Digite seu email"
         />
+=======
+  <NavBar position="relative" />
+
+  <div>
+    <!-- Conteúdo principal -->
+    <div class="login-container">
+      <h2 class="fonte mb-4">Login</h2>
+      <form @submit.prevent="submitLogin">
+        <div class="form-group mb-3">
+          <label for="username">Username</label>
+          <input
+            v-model="username"
+            type="text"
+            id="username"
+            class="form-control"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="password">Password</label>
+          <input
+            v-model="password"
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button class="btn btn-light" type="button">Button</button>
+        </div>
+      </form>
+
+      <p v-if="errorMessage" class="error mt-3">{{ errorMessage }}</p>
+
+      <p class="text-center mt-3">
+        Não tem uma conta?
+        <a href="#" @click.prevent="showRegister = true">Crie uma agora</a>
+      </p>
+
+      <div v-if="showRegister" class="register-container">
+        <h2 class="text-center mb-4">Registro</h2>
+        <form @submit.prevent="submitRegister">
+          <div class="form-group mb-3">
+            <label for="registerUsername">Username</label>
+            <input
+              v-model="registerUsername"
+              type="text"
+              id="registerUsername"
+              class="form-control"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="registerPassword">Password</label>
+            <input
+              v-model="registerPassword"
+              type="password"
+              id="registerPassword"
+              class="form-control"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-success">Register</button>
+          <button type="button" class="btn btn-secondary ms-2" @click="showRegister = false">Cancel</button>
+        </form>
+>>>>>>> e4376c87c3da89e150e4b35964d17bf149c7ae0b
       </div>
 
       <div class="form-group">
@@ -35,6 +111,12 @@
     <div v-if="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
+<<<<<<< HEAD
+=======
+  </div>
+</template>
+
+>>>>>>> e4376c87c3da89e150e4b35964d17bf149c7ae0b
 
     <div class="create-account">
       <p>Ainda não tem uma conta?</p>
