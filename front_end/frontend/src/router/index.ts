@@ -3,6 +3,7 @@ import Home from '../pages/home.vue';
 import Login from '../pages/login.vue';
 import Postos from '../pages/Postos.vue';
 import postodetalhe from '@/pages/postodetalhe.vue';
+import Registro from '@/pages/registro.vue';
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     name: 'PostoDetalhe',
     component: postodetalhe,
   },
+  {
+    path: '/register',
+    name: 'Registro',
+    component: Registro,
+  }
 ];
 
 const router = createRouter({
