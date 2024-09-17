@@ -9,45 +9,46 @@ const router = Router()
 
 router.use(authenticateJWT) //bloqueia/desbloqueia todas as rotas
 
-router.post('/', async(req, res) => {  //Criar Usuário
-    const {name, username, email, password, role} = req.body
+router.post('/', async (req, res) => {  // Criar Usuário
+    const { name, username, email, password, role } = req.body;
 
-    if(!name || !username || !email || !password || !role) {  //Caso esteja faltando algum elemento
-        return res.status(400).json ({
+    if (!name || !username || !email || !password || !role) {  // Verifica campos obrigatórios
+        return res.status(400).json({
             error: {
                 status: 400,
                 name: 'Validation Error',
                 message: 'You missed a required field'
             }
-        })
+        });
     }
 
-    const userRepository = AppDataSource.getRepository(User)
-    const roleRepository = AppDataSource.getRepository(Role)
+    const userRepository = AppDataSource.getRepository(User);
+    const roleRepository = AppDataSource.getRepository(Role);
 
-    let roleInDB = await roleRepository.findOne({where: {name: role}})
+    let roleInDB = await roleRepository.findOne({ where: { name: role } });
 
-    if(!roleInDB) {
-        roleInDB = roleRepository.create({name: role})
-        await roleRepository.save(roleInDB)
+    if (!roleInDB) {
+        roleInDB = roleRepository.create({ name: role });
+        await roleRepository.save(roleInDB);
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10)
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
-
-    const newUser: User = userRepository.create( {
+    const newUser: User = userRepository.create({
         name,
         username,
         email,
         password: hashedPassword,
-        role: roleInDB
-    })
+        role: roleInDB,
+        BikesAdu: 0, 
+        BikesInf: 0  
+    });
 
-    await userRepository.save(newUser)
+    await userRepository.save(newUser);
     res.status(200).json({
-        data: newUser 
-    })
-} )
+        data: newUser
+    });
+});
 
 router.get('/', async (req, res) => {   //Lista todos os Usuários
     const userRepository = AppDataSource.getRepository(User)
@@ -110,57 +111,59 @@ router.delete('/:id', async (req, res) => {  //Deleta um usuário
 
 })
 
-router.put('/:id', async (req, res) => {   //Atualiza um usuário
-    const { id } = req.params
-    const {name, username, email, password, role} = req.body
+router.put('/:id', async (req, res) => {   // Atualiza um usuário
+    const { id } = req.params;
+    const { name, username, email, password, role, BikesAdu, BikesInf } = req.body;
 
-    const userRepository = AppDataSource.getRepository(User)
-    const roleRepository = AppDataSource.getRepository(Role)
-    
+    const userRepository = AppDataSource.getRepository(User);
+    const roleRepository = AppDataSource.getRepository(Role);
+
     const user = await userRepository.findOne({
-        where: {
-            id: parseInt(id)},
-            relations: ['role']
-        })
+        where: { id: parseInt(id) },
+        relations: ['role'],
+    });
 
-        if(!user) {
-            return res.status(404).json({
-                error: {
-                    status: 404,
-                    name: 'NotFound',
-                    message: 'User not found'
-                }
-            })
-        }
-
-    let roleInDB = await roleRepository.findOne({where: {name: role}})
-
-    if(!roleInDB) {
-        roleInDB = roleRepository.create({name: role})
-        await roleRepository.save(roleInDB)
-    }
-
-    if(!user) {
+    if (!user) {
         return res.status(404).json({
             error: {
                 status: 404,
                 name: 'NotFound',
-                message: 'User not found'
-            }
-        })
+                message: 'User not found',
+            },
+        });
     }
 
-    user.name = name || user.name
-    user.username = username || user.username
-    user.email = email || user.email
-    user.password = password || user.password
-    user.role = roleInDB
+    // Verifica se o número de bikes excede o limite permitido
+    if (BikesAdu > 2 || BikesInf > 2) {
+        return res.status(400).json({
+            error: {
+                status: 400,
+                name: 'ValidationError',
+                message: 'O número de "bikes" não pode ser maior do que 2!',
+            },
+        });
+    }
 
-    userRepository.save(user)
-    res.status(200).json ({
-        data: user
-    })
-})
+    let roleInDB = await roleRepository.findOne({ where: { name: role } });
+
+    if (!roleInDB) {
+        roleInDB = roleRepository.create({ name: role });
+        await roleRepository.save(roleInDB);
+    }
+
+    user.name = name || user.name;
+    user.username = username || user.username;
+    user.email = email || user.email;
+    user.password = password || user.password;
+    user.role = roleInDB;
+    user.BikesAdu = BikesAdu ?? user.BikesAdu;
+    user.BikesInf = BikesInf ?? user.BikesInf;
+
+    await userRepository.save(user);
+    res.status(200).json({
+        data: user,
+    });
+});
 
 
 router.get('/', (req, res) => {   //HomePage
