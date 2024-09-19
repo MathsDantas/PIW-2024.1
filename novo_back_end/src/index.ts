@@ -3,6 +3,7 @@ import userRoutes from './routes/userRoutes'
 import { AppDataSource } from './DataSource'
 import authRotes from './routes/authRouter'
 import postoRoutes from './routes/postoRoutes'
+import cors from 'cors'
 
 
 async function startServer () {
@@ -13,6 +14,10 @@ async function startServer () {
         const app = express()
         const port = 3000
         
+
+
+        app.use(cors());        
+
         app.use(express.json())
         app.use('/', authRotes)
         app.use('/users', userRoutes)
