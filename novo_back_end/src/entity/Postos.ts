@@ -1,21 +1,17 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
-import { Role } from "./Role"
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Bike } from "./Bike";
 
 @Entity()
-export class Posto {     //Objeto de Postos de Aluguel
+export class Posto {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-    @PrimaryGeneratedColumn()
-    id!: number
+  @Column()
+  nameUnidade!: string;
 
-    @Column()
-    nameUnidade!: string
+  @Column()
+  endereco!: string; // Certifique-se de que isso também esteja definido, se for necessário
 
-    @Column()
-    endereco!: string
-
-    @Column()
-    bikesAdu!: number
-
-    @Column()
-    bikesInf!: number
+  @OneToMany(() => Bike, bike => bike.posto, { cascade: true })  // Verifique se Bike está correto
+  bikes!: Bike[];  // Um posto tem várias bikes
 }
