@@ -2,8 +2,13 @@
     <div>
       <NavBar position="relative" />
     </div>
+
+    <div>
+      <br>  <!--gambiarra provisória para o conteudo da página não ficar grudado na Navbar-->
+    </div>
   
     <div class="register-container">
+      <h2 class="fonte mb-4">Criar Conta</h2>
       <form @submit.prevent="onSubmit">
         <div class="form-group">
           <label for="email">Email:</label>

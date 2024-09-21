@@ -2,6 +2,10 @@
   <div>
     <NavBar position="relative" />
 
+    <div>
+      <br>  <!--gambiarra provisória para o conteudo da página não ficar grudado na Navbar-->
+    </div>
+
     <!-- Conteúdo principal -->
     <div class="login-container">
       <h2 class="fonte mb-4">Login</h2>

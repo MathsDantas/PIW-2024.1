@@ -27,7 +27,7 @@ onMounted(() => {
 
 <template>
   <div class="pag">
-    <NavBar position="relative" />
+    <NavBar position="absolute" />
 
 
     <div class="logo">

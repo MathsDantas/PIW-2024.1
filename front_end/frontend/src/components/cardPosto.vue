@@ -4,7 +4,7 @@
       <div class="card-body">
         <h5 class="card-title">byKeria: Central</h5>
         <p class="card-text">Rua Rhaenyra Rainha, 235</p>
-        <RouterLink to="/postos/1" class="btn btn-primary">Mais Informações</RouterLink>
+        <RouterLink to="/users" class="btn btn-primary">Mais Informações</RouterLink>
       </div>
     </div>
 </template>
