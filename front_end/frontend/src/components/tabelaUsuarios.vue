@@ -6,6 +6,7 @@
           <th>Nome</th>
           <th>Username</th>
           <th>Email</th>
+          <th>bikes</th>
           <th>Role</th>
           <th>Actions</th>
         </tr>
@@ -16,6 +17,7 @@
           <td>{{ user.name }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
+          <td>{{ user.bikes.length }}</td>
           <td>{{ user.role.name }}</td>
           <td>
             <RouterLink class="btn btn-sm btn-info" :to="`/users/${user.id}`">
