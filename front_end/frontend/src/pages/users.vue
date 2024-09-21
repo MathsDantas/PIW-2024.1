@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
 import TabelaUsuarios from '@/components/tabelaUsuarios.vue'; // Importando o novo componente da tabela
+import BikesDisponiveis from "@/components/Bikes.vue";
 import axios from 'axios'
 import { ref } from 'vue';
 import { onMounted } from 'vue';
@@ -42,7 +43,8 @@ onMounted(() => {
       <!-- Primeiro container -->
       <div class="left-container">
         <!-- Conteúdo que você deseja colocar na esquerda -->
-        <p>AQUI FICA O ESTOQUE DE BIKES DO POSTO</p>
+         <BikesDisponiveis />
+        
       </div>
 
       <div class="meio" >

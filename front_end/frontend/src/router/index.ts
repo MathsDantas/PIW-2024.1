@@ -5,6 +5,7 @@ import Postos from '../pages/postos.vue';
 import postodetalhe from '@/pages/postodetalhe.vue';
 import Registro from '@/pages/registro.vue';
 import users from '@/pages/users.vue';
+import Admin from '@/pages/Admin.vue'
 
 const routes = [
   {
@@ -36,7 +37,10 @@ const routes = [
     path: '/users',
     name: 'Usuários',
     component: users,
-  }
+  },
+  { path: '/admin',
+    name: 'Administrador',
+    component: Admin } // rotas do admin
 ];
 
 const router = createRouter({

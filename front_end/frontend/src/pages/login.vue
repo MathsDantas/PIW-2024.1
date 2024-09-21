@@ -1,11 +1,6 @@
 <template>
   <div>
-    <NavBar position="relative" />
-
-    <div>
-      <br>  <!--gambiarra provisória para o conteudo da página não ficar grudado na Navbar-->
-    </div>
-
+   
     <!-- Conteúdo principal -->
     <div class="login-container">
       <h2 class="fonte mb-4">Login</h2>
@@ -35,17 +30,24 @@
         </div>
 
         <div class="d-grid gap-2 col-6 mx-auto">
-          <button class="btn btn-light" type="submit">Login</button>
+              
+          <button class="btn btn-light" type="button">Button</button>
+          
+      
         </div>
+
+        
       </form>
 
       <p v-if="errorMessage" class="error mt-3">{{ errorMessage }}</p>
 
+      <!-- Link para criar uma conta -->
       <p class="text-center mt-3">
-        Não tem uma conta?
+        Não tem uma conta? 
         <a href="#" @click.prevent="showRegister = true">Crie uma agora</a>
       </p>
 
+      <!-- Formulário de registro (condicional) -->
       <div v-if="showRegister" class="register-container">
         <h2 class="text-center mb-4">Registro</h2>
         <form @submit.prevent="submitRegister">
@@ -77,113 +79,120 @@
           <button type="button" class="btn btn-secondary ms-2" @click="showRegister = false">Cancel</button>
         </form>
       </div>
-
-      <div class="create-account">
-        <p>Ainda não tem uma conta?</p>
-        <router-link to="/register">Criar conta</router-link>
-      </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import NavBar from '@/components/NavBar.vue';
-import { ref } from 'vue';
-
-// Dados reativos
-const username = ref('');
-const password = ref('');
-const registerUsername = ref('');
-const registerPassword = ref('');
-const errorMessage = ref('');
-const showRegister = ref(false);
-
-// Função para tratar o submit do login
-const submitLogin = () => {
-  if (username.value === 'admin' && password.value === 'password') {
-    alert('Login bem-sucedido!');
-    errorMessage.value = '';
-    // Redirecionamento ou outra ação após o login
-  } else {
-    errorMessage.value = 'Credenciais inválidas. Tente novamente.';
-  }
-};
-
-// Função para tratar o submit do registro
-const submitRegister = () => {
-  if (registerUsername.value && registerPassword.value) {
-    alert('Registro bem-sucedido!');
-    registerUsername.value = '';
-    registerPassword.value = '';
-    showRegister.value = false;
-  } else {
-    alert('Por favor, preencha todos os campos.');
-  }
+<script>
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      errorMessage: '',
+      showRegister: false,
+      registerUsername: '',
+      registerPassword: '',
+    };
+  },
+  methods: {
+    submitLogin() {
+      if (this.username === 'admin' && this.password === 'password') {
+        alert('Login successful!');
+        this.errorMessage = '';
+        // Redirecionar para outra página ou ação aqui
+      } else {
+        this.errorMessage = 'Invalid username or password';
+      }
+    },
+    submitRegister() {
+      if (this.registerUsername && this.registerPassword) {
+        alert('Registration successful!');
+        this.registerUsername = '';
+        this.registerPassword = '';
+        this.showRegister = false;
+      } else {
+        alert('Please fill out all fields.');
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
-/* Estilos para a página Login */
+ @import url('https://fonts.cdnfonts.com/css/coolvetica-2');
+
+/* Estilos da área de login e registro */
 .login-container {
   max-width: 400px;
-  margin: 0 auto;
+  margin: 100px auto 0;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #F1EC41;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color:  #F1EC41;
 }
 
-.form-group {
-  margin-bottom: 16px;
+h2 {
+  margin-bottom: 20px;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ffffff;
-  border-radius: 4px;
-}
-
-.form-group button {
-  width: 100%;
-  padding: 10px;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.form-group button:hover {
-  background-color: #d854da;
-}
-
-.error-message {
+.error {
   color: red;
-  margin-top: 10px;
-}
-
-.create-account {
-  margin-top: 20px;
   text-align: center;
 }
 
-.create-account p {
-  margin-bottom: 8px;
+.register-container {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+} 
+
+.fonte {
+
+  font-family: 'Coolvetica', sans-serif;
+  
 }
 
-.create-account a {
-  color: #4CAF50;
-  text-decoration: none;
+
+/* Estilos do cabeçalho */
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  
+}
+.custom-header {
+background-color:  #F1EC41; /* Cor personalizada */
+}
+nav ul {
+list-style: none;
+padding: 0;
+margin: 0;
+display: flex;
 }
 
-.create-account a:hover {
-  text-decoration: underline;
+nav .nav-item {
+margin-left: 15px;
+}
+
+nav .nav-link {
+color: #ffffff;
+text-decoration: none;
+}
+
+nav .nav-link:hover {
+text-decoration: underline;
+}
+
+.background {
+background-image: url('https://plus.unsplash.com/premium_photo-1661393019836-067a90df6f68?q=80&w=1941&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+background-size: cover; 
+background-position: center; 
+background-repeat: no-repeatheight 100vh;
 }
 </style>
