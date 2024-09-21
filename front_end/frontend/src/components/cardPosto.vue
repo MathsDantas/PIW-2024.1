@@ -3,13 +3,8 @@
       <img src="../assets/postos/posto1.png" class="card-img-top" alt="Card Image">
       <div class="card-body">
         <h5 class="card-title">byKeria: Central</h5>
-<<<<<<< Updated upstream
-        <p class="card-text">Rua Rhaenyra Rainha, 235</p>
-        <RouterLink to="/users" class="btn btn-primary">Mais Informações</RouterLink>
-=======
         <p class="card-text">postos.enderço</p>
         <RouterLink to="/postos/1" class="btn btn-primary">Mais Informações</RouterLink>
->>>>>>> Stashed changes
       </div>
     </div>
 </template>
