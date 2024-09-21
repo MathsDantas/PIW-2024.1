@@ -11,6 +11,9 @@ export class Posto {     //Objeto de Postos de Aluguel
     nameUnidade!: string
 
     @Column()
+    endereco!: string
+
+    @Column()
     bikesAdu!: number
 
     @Column()
