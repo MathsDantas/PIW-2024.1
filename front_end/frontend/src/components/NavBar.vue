@@ -18,6 +18,7 @@
             <RouterLink to="/" class="nav-link">Home</RouterLink>
             <RouterLink to="/postos" class="nav-link" >Postos de Bikes</RouterLink>
             <RouterLink to="/login" class="nav-link">Login</RouterLink>
+            <router-link to="/logout" class="nav-link">Logout</router-link>
           </div>
         </div>
       </div>

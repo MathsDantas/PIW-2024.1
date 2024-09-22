@@ -6,6 +6,19 @@ import axios from 'axios'
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 
+import { useAuthStore } from '@/store/auth';
+
+const authStore = useAuthStore();
+
+axios.interceptors.request.use((config) => {
+  const token = authStore.jwt;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+
 const users = ref([]);
 
 async function fetchUsers() {

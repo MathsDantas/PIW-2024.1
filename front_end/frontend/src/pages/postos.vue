@@ -1,6 +1,21 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
 import cardPosto from '@/components/cardPosto.vue'
+
+import axios from 'axios';
+import { useAuthStore } from '@/store/auth';
+
+const authStore = useAuthStore();
+
+axios.interceptors.request.use((config) => {
+  const token = authStore.jwt;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+
 </script>
 
 <template>

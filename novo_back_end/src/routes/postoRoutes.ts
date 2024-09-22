@@ -5,8 +5,11 @@ import { AppDataSource } from "../DataSource";
 import { Posto } from "../entity/Postos";
 import { Bike } from "../entity/Bike";
 import { User } from "../entity/User";
+import { authenticateJWT } from "../middleware/authMiddleware";
 
 const router = Router()
+
+router.use(authenticateJWT)
 
 router.get('/', async (req, res) => {   // Lista todos os Postos de Aluguel
     const postoRepository = AppDataSource.getRepository(Posto);

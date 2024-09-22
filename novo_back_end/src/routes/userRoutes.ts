@@ -9,7 +9,7 @@ import { Posto } from "../entity/Postos";
 
 const router = Router();
 
-// router.use(authenticateJWT) // Descomente para bloquear/desbloquear todas as rotas
+router.use(authenticateJWT) // Descomente para bloquear/desbloquear todas as rotas
 
 router.post('/', async (req, res) => {  // Criar Usuário
     const { name, username, email, password, role } = req.body;
