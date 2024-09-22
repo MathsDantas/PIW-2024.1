@@ -19,7 +19,7 @@ import NavBar from './components/NavBar.vue';
     
 </div>
   
-  <NavBar />
+  <NavBar position="absolute"/>
   
 
   <div id="app">

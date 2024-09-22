@@ -1,23 +1,39 @@
 <template>
-    <div>
-      <NavBar position="relative" />
-    </div>
 
-    <div>
-      <br>  <!--gambiarra provisória para o conteudo da página não ficar grudado na Navbar-->
-    </div>
-  
+  <div class="page" >
+
     <div class="register-container">
       <h2 class="fonte mb-4">Criar Conta</h2>
       <form @submit.prevent="onSubmit">
         <div class="form-group">
-          <label for="email">Email:</label>
+          <label for="name">Seu Nome:</label>
+          <input
+            type="name"
+            v-model="formData.name"
+            id="emailnameuired"
+            placeholder="Digite seu nome"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="username">User Name:</label>
+          <input
+            type="username"
+            v-model="formData.username"
+            id="username"
+            required
+            placeholder="Digite seu username"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail:</label>
           <input
             type="email"
             v-model="formData.email"
             id="email"
             required
-            placeholder="Digite seu email"
+            placeholder="Digite seu e-mail"
           />
         </div>
   
@@ -57,51 +73,108 @@
         <router-link to="/login">Fazer login</router-link>
       </div>
     </div>
-  </template>
+
+    <div class="foto" >
+
+    </div>
+
+  </div>    
+
+</template>
   
-  <script setup lang="ts">
-  import NavBar from '@/components/NavBar.vue';
-  import { reactive, ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  
-  // Definindo a interface para os dados do formulário
-  interface RegisterForm {
-    email: string;
-    password: string;
-    confirmPassword: string;
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+// Definindo a interface para os dados do formulário
+interface RegisterForm {
+  email: string;
+  name: string;
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
+// Dados reativos do formulário
+const formData = reactive<RegisterForm>({
+  email: '',
+  username: '',
+  name: '',
+  password: '',
+  confirmPassword: ''
+});
+
+// Mensagem de erro
+const errorMessage = ref<string>('');
+
+// Router para navegação após o registro
+const router = useRouter();
+
+// Função para tratar o submit do formulário
+const onSubmit = async () => {
+  // Validação simples
+  if (formData.password !== formData.confirmPassword) {
+    errorMessage.value = 'As senhas não coincidem.';
+    return;
   }
-  
-  // Dados reativos do formulário
-  const formData = reactive<RegisterForm>({
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  
-  // Mensagem de erro
-  const errorMessage = ref<string>('');
-  
-  const router = useRouter();
-  
-  // Função para tratar o submit do formulário
-  const onSubmit = () => {
-    // Validação simples
-    if (formData.password !== formData.confirmPassword) {
-      errorMessage.value = 'As senhas não coincidem.';
-      return;
+
+  try {
+    // Fazer a requisição POST para o backend
+    const response = await axios.post('http://localhost:3000/users', {
+      name: formData.name,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      role: 'user' // Ajuste conforme o sistema de roles no backend
+    });
+
+    if (response.status === 200) {
+      alert('Conta criada com sucesso!');
+      // Redirecionar para a página de login
+      router.push('/login');
     }
-    
-    alert('Conta criada com sucesso!');
-    // Redirecionamento ou outra ação após a criação da conta
-    router.push('/login');
-  };
-  </script>
+  } catch (error) {
+    // Tratamento de erros
+    console.error(error);
+    errorMessage.value = 'Erro ao criar a conta. Tente novamente.';
+  }
+};
+</script>
+
   
-  <style scoped>
+<style scoped>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Madimi+One&display=swap');
+
+  .page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+  }
+
+  .foto{
+  width: 120vh;
+  height: 100vh; 
+  background-image: url('../assets/bikes.jpg'); /* Caminho relativo para a imagem */
+  background-size: cover; /* A imagem cobrirá toda a área da div */
+  background-position: center; /* Centraliza a imagem */
+  background-repeat: no-repeat; /* Evita a repetição da imagem */
+  }
+
+
+
+
   /* Estilos para a página Register */
   .register-container {
-    max-width: 400px;
+    font-family: "Inter", sans-serif;
+    width: 35%;
+    height: 80%;
     margin: 0 auto;
+    margin-top: 3%;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -136,7 +209,7 @@
   }
   
   .form-group button:hover {
-    background-color: #d854da;
+    background-color: #c4c4c4;
   }
   
   .error-message {
@@ -161,5 +234,5 @@
   .login-link a:hover {
     text-decoration: underline;
   }
-  </style>
+</style>
   
