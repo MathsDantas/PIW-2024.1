@@ -44,10 +44,11 @@
       <!-- Link para criar uma conta -->
       <p class="text-center mt-3">
         Não tem uma conta? 
-        <a href="#" @click.prevent="showRegister = true">Crie uma agora</a>
+        
+         <router-link to="/register">Crie uma agora</router-link>
       </p>
 
-      <!-- Formulário de registro (condicional) -->
+      <!-- Formulário de registro (condicional) 
       <div v-if="showRegister" class="register-container">
         <h2 class="text-center mb-4">Registro</h2>
         <form @submit.prevent="submitRegister">
@@ -78,7 +79,7 @@
           <button type="submit" class="btn btn-success">Register</button>
           <button type="button" class="btn btn-secondary ms-2" @click="showRegister = false">Cancel</button>
         </form>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
