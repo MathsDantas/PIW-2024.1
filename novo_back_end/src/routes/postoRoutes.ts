@@ -149,7 +149,7 @@ router.delete('/:id', async (req, res) => {  // Deleta um Posto
     
     const posto = await postoRepository.findOne({
         where: { id: parseInt(id) },
-        relations: ['bikes']  // Certifique-se de remover as bikes associadas
+        relations: ['bikes']  // Certifica-se de remover as bikes associadas
     });
 
     if (!posto) {
@@ -293,7 +293,21 @@ router.post('/:id/alugar', async (req, res) => {
     });
 });
 
+//teste da api
 
+router.get('/', async (req, res) => {   // Lista todos os Postos de Aluguel
+    const postoRepository = AppDataSource.getRepository(Posto);
+    
+    try {
+        const postos = await postoRepository.find();  // Obtém todos os postos do banco de dados
+
+        res.json({
+            data: postos
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar postos de aluguel' });
+    }
+});
 
 
 
