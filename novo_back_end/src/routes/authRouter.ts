@@ -7,34 +7,37 @@ import { User } from "../entity/User";
 const router = Router()
 
 router.post('/login', async (req, res) => {
-    const { username, password } = req.body
+    const { username, password } = req.body;
 
-    const userRepository = AppDataSource.getRepository(User)
-    const user = await userRepository.findOneBy({ username })
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOne({
+        where: { username },
+        relations: ['role'] // Carrega a role junto com o usuário
+    });
 
-    if(user && bcrypt.compareSync(password, user.password)) {
-
+    if (user && bcrypt.compareSync(password, user.password)) {
         const token = jwt.sign({
             userId: user.id,
-            userRole: user.role
-        }, 'meu_segredo_mais_importante', {expiresIn: '1h'} )
+            userRole: user.role.name // Acesse o nome da role aqui
+        }, 'meu_segredo_mais_importante', { expiresIn: '1h' });
 
-        
-        res.status(200).json({ data: {
-            username: user.username,
-            email: username.email,
-            jwt: token 
-        }})
-
+        res.status(200).json({
+            data: {
+                username: user.username,
+                email: user.email,
+                role: user.role.name, // Inclua o nome da role no retorno
+                jwt: token 
+            }
+        });
     } else {
         return res.status(401).json({
             status: 401,
             name: 'Authorization Error',
-            menssage: 'Username or Passord invalid'
-        }) 
+            message: 'Username or Password invalid'
+        });
     }
+});
 
-})
 
 
 router.get('/logout', (req, res) => {
