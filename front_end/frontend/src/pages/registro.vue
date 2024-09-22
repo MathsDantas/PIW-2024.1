@@ -1,16 +1,15 @@
 <template>
-
-  <div class="page" >
-
+  <div class="page">
     <div class="register-container">
       <h2 class="fonte mb-4">Criar Conta</h2>
       <form @submit.prevent="onSubmit">
         <div class="form-group">
           <label for="name">Seu Nome:</label>
           <input
-            type="name"
+            type="text"
             v-model="formData.name"
-            id="emailnameuired"
+            id="name"
+            required
             placeholder="Digite seu nome"
           />
         </div>
@@ -18,7 +17,7 @@
         <div class="form-group">
           <label for="username">User Name:</label>
           <input
-            type="username"
+            type="text"
             v-model="formData.username"
             id="username"
             required
@@ -36,7 +35,7 @@
             placeholder="Digite seu e-mail"
           />
         </div>
-  
+
         <div class="form-group">
           <label for="password">Senha:</label>
           <input
@@ -47,7 +46,7 @@
             placeholder="Digite sua senha"
           />
         </div>
-  
+
         <div class="form-group">
           <label for="confirm-password">Confirmar Senha:</label>
           <input
@@ -58,29 +57,35 @@
             placeholder="Confirme sua senha"
           />
         </div>
-  
+
+        <!-- Adicionando o campo de seleção de role -->
+        <div class="form-group">
+          <label for="role">Escolha seu tipo de conta:</label>
+          <select v-model="formData.role" id="role" required>
+            <option value="normal">Normal</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
         <div class="form-group">
           <button type="submit">Criar Conta</button>
         </div>
       </form>
-  
+
       <div v-if="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
-  
+
       <div class="login-link">
         <p>Já tem uma conta?</p>
         <router-link to="/login">Fazer login</router-link>
       </div>
     </div>
 
-    <div class="foto" >
-
-    </div>
-
-  </div>    
-
+    <div class="foto"></div>
+  </div>
 </template>
+
   
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
@@ -94,6 +99,7 @@ interface RegisterForm {
   username: string;
   password: string;
   confirmPassword: string;
+  role: string;
 }
 
 // Dados reativos do formulário
@@ -102,7 +108,8 @@ const formData = reactive<RegisterForm>({
   username: '',
   name: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  role: 'normal' // Definido como padrão "normal"
 });
 
 // Mensagem de erro
@@ -126,7 +133,7 @@ const onSubmit = async () => {
       username: formData.username,
       email: formData.email,
       password: formData.password,
-      role: 'user' // Ajuste conforme o sistema de roles no backend
+      role: formData.role // Enviando a role selecionada
     });
 
     if (response.status === 200) {
