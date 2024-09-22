@@ -14,15 +14,12 @@ const routes = [
   { path: '/register', name: 'Registro', component: Registro },
   { path: '/users', name: 'Usuários', component: users, meta: { requiresAuth: true, requiresAdmin: true } }, // Rota protegida
   { path: '/admin', name: 'Administrador', component: Admin },
-  {
-    path: '/logout',
-    name: 'Logout',
-    component: {
+  { path: '/logout', name: 'Logout', component: {
       template: '<div></div>', // Componente vazio
       beforeRouteEnter(to: any, from: any, next: (arg0: string) => void) {
         const authStore = useAuthStore();
         authStore.clearAuthData(); // Limpa os dados da autenticação
-        next('/login'); // Redireciona para a página de login
+        next('/'); // Redireciona para a página de home
       }
     }
   }

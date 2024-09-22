@@ -1,15 +1,29 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
-import TabelaUsuarios from '@/components/tabelaUsuarios.vue'; // Importando o novo componente da tabela
+import TabelaUsuarios from '@/components/tabelaUsuarios.vue';
 import BikesDisponiveis from "@/components/Bikes.vue";
-import axios from 'axios'
-import { ref } from 'vue';
-import { onMounted } from 'vue';
-
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/store/auth';
+import CadastroModal from '@/components/cadastroModal.vue';
+
+// Tipagem para um usuário
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  bikes: any[];
+  role: {
+    name: string;
+  };
+}
 
 const authStore = useAuthStore();
+const users = ref<User[]>([]);
+const showModal = ref(false); // Controlar a visibilidade do modal
 
+// Configurar o interceptor para adicionar o JWT às requisições
 axios.interceptors.request.use((config) => {
   const token = authStore.jwt;
   if (token) {
@@ -18,9 +32,7 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-
-const users = ref([]);
-
+// Função para buscar os usuários
 async function fetchUsers() {
   try {
     const response = await axios.get('http://localhost:3000/users');
@@ -30,10 +42,47 @@ async function fetchUsers() {
   }
 }
 
-function askToDelete(id: any) {
-  console.log(`Deletar o usuário com id: ${id}`);
+// Função para excluir um usuário
+async function deleteUser(userId: number) {
+  if (confirm('Tem certeza que deseja excluir este usuário?')) {
+    try {
+      await axios.delete(`http://localhost:3000/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${authStore.jwt}`
+        }
+      });
+      // Atualizar o estado local removendo o usuário da lista
+      users.value = users.value.filter(user => user.id !== userId);
+    } catch (error) {
+      console.error('Erro ao excluir usuário:', error);
+      alert('Erro ao excluir usuário.');
+    }
+  }
 }
 
+// Função para pedir confirmação de exclusão
+function askToDelete(id: number) {
+  deleteUser(id);
+}
+
+// Função para abrir o modal
+function openModal() {
+  showModal.value = true;
+}
+
+// Função para fechar o modal
+function closeModal() {
+  showModal.value = false;
+}
+
+// Função para tratar o evento de criação de usuário
+function onUserCreated() {
+  // Atualizar a lista de usuários após a criação de um novo usuário
+  fetchUsers();
+  closeModal();
+}
+
+// Carregar os usuários ao montar o componente
 onMounted(() => {
   fetchUsers();
 });
@@ -43,55 +92,56 @@ onMounted(() => {
   <div class="pag">
     <NavBar position="absolute" />
 
-
     <div class="logo">
       <h1>LOGO</h1>
       <h3>Posto Central</h3>
       <h4>Rua Rhaenyra Rainha, 235</h4>
-    
     </div>
-
 
     <div class="content-container">
       <!-- Primeiro container -->
       <div class="left-container">
-        <!-- Conteúdo que você deseja colocar na esquerda -->
-         <BikesDisponiveis />
-        
+        <BikesDisponiveis />
       </div>
 
-      <div class="meio" >
-
-        <div class="bnt-alugar" >
-            <h2>Alugar</h2>
-            <button type="button" class="btn btn-warning">
-              <i class="bi bi-arrow-right-square-fill"></i>
-            </button>
+      <div class="meio">
+        <div class="bnt-alugar">
+          <h2>Alugar</h2>
+          <button type="button" class="btn btn-warning">
+            <i class="bi bi-arrow-right-square-fill"></i>
+          </button>
         </div>
 
         <div class="bnt-devolver">
           <h2>Devolver</h2>
-            <button type="button" class="btn btn-warning">
-              <i class="bi bi-arrow-left-square-fill"></i>
-            </button>
+          <button type="button" class="btn btn-warning">
+            <i class="bi bi-arrow-left-square-fill"></i>
+          </button>
         </div>
-
       </div>
 
       <!-- Segundo container: tabela de usuários -->
       <div class="right-container">
-        <button type="button" class="btn btn-primary btn-lg">
+        <button type="button" class="btn btn-primary btn-lg" @click="openModal">
           <i class="bi bi-plus-circle-fill"></i>
           Adicionar Usuário
         </button>
         <TabelaUsuarios :users="users" :askToDelete="askToDelete" />
       </div>
     </div>
-  </div> 
+
+    <!-- Modal para adicionar usuário -->
+    <div v-if="showModal" class="modal-overlay">
+      <div class="modal-content">
+        <button @click="closeModal" class="close-btn">X</button>
+        <!-- Formulário de cadastro de usuário -->
+        <CadastroModal @userCreated="onUserCreated" @close="closeModal" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-
 .pag {
   background-color: #f1f0c3;
   min-height: 100vh;
@@ -105,8 +155,6 @@ onMounted(() => {
   padding-top: 5%;
 }
 
-
-
 .content-container {
   display: flex;
   justify-content: space-between;
@@ -116,18 +164,16 @@ onMounted(() => {
 }
 
 button.btn.btn-primary.btn-lg {
-  background-color: #F1EC41; /* Cor de fundo personalizada */
-  border: none; /* Remover borda padrão */
-  color: black; /* Cor do texto e ícone */
-  font-size: 18px; /* Tamanho do texto */
-  padding: 10px 20px; /* Ajustar espaçamento */
+  background-color: #F1EC41;
+  border: none;
+  color: black;
+  font-size: 18px;
+  padding: 10px 20px;
 }
 
-/* Efeito hover */
 button.btn.btn-primary.btn-lg:hover {
-  background-color: #e0da3b; /* Cor levemente mais escura ao passar o mouse */
+  background-color: #e0da3b;
 }
-
 
 .left-container {
   flex: 1;
@@ -160,34 +206,35 @@ button.btn.btn-primary.btn-lg:hover {
   align-items: center;
 }
 
-/* Estilos para as divs de alugar e devolver */
-.bnt-alugar,
-.bnt-devolver {
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
-/* Aumentando o tamanho dos botões */
-.bnt-alugar button,
-.bnt-devolver button {
-  width: 100px; /* Largura maior do botão */
-  height: 100px; /* Altura maior do botão */
-  font-size: 24px; /* Aumenta o tamanho do ícone */
-  background-color: #F1EC41;
-  display: flex;
+.modal-content {
+  background-color: #fff;
+  padding: 5px;
+  margin: 100px;
+  margin-top: 100px;
+  border-radius: 8px;
+  min-width: 400px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
   border: none;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px; /* Espaço entre o texto e o botão */
+  font-size: 20px;
 }
-
-/* Ajustando o ícone dentro do botão */
-.bnt-alugar i,
-.bnt-devolver i {
-  font-size: 45px; /* Tamanho do ícone */
-}
-
 </style>
