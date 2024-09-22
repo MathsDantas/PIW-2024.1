@@ -7,8 +7,7 @@ import cardPosto from '@/components/cardPosto.vue'
   <NavBar position="absolute" />
   <div class="container">
     <cardPosto /> 
-    <cardPosto /> 
-    <cardPosto /> 
+    
   </div>
 </template>
 
