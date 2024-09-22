@@ -1,0 +1,18 @@
+Para alugar Bikes:
+
+POST em http://localhost:3000/postos/:id/alugar, onde :id é o ID do posto do qual você deseja alugar as bikes.
+
+JSON para enviar, onde userID é o ID do usuário, e as quantidades de Bikes
+
+{
+    "userId": 1,
+    "bikesAdu": 2,
+    "bikesInf": 1
+}
+ 
+
+
+
+ Para Devolver Bikes:
+
+ POST em http://localhost:3000/users/:userId/devolver/:postoId, onde :userId é o ID do usuário, e :postoID é o ID do posto.
