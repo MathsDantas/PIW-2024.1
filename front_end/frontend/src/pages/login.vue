@@ -48,77 +48,49 @@
          <router-link to="/register">Crie uma agora</router-link>
       </p>
 
-      <!-- Formulário de registro (condicional) 
-      <div v-if="showRegister" class="register-container">
-        <h2 class="text-center mb-4">Registro</h2>
-        <form @submit.prevent="submitRegister">
-          <div class="form-group mb-3">
-            <label for="registerUsername">Username</label>
-            <input
-              v-model="registerUsername"
-              type="text"
-              id="registerUsername"
-              class="form-control"
-              placeholder="Enter your username"
-              required
-            />
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="registerPassword">Password</label>
-            <input
-              v-model="registerPassword"
-              type="password"
-              id="registerPassword"
-              class="form-control"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          <button type="submit" class="btn btn-success">Register</button>
-          <button type="button" class="btn btn-secondary ms-2" @click="showRegister = false">Cancel</button>
-        </form>
-      </div> -->
+      
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       username: '',
       password: '',
-      errorMessage: '',
-      showRegister: false,
-      registerUsername: '',
-      registerPassword: '',
+      errorMessage: null
     };
   },
   methods: {
-    submitLogin() {
-      if (this.username === 'admin' && this.password === 'password') {
-        alert('Login successful!');
-        this.errorMessage = '';
-        // Redirecionar para outra página ou ação aqui
-      } else {
-        this.errorMessage = 'Invalid username or password';
+    async submitLogin() {
+      try {
+        // Envia uma requisição POST para o backend
+        const response = await axios.post('http://localhost:3000/login', {
+          username: this.username,
+          password: this.password
+        });
+
+        // Armazena o token JWT em localStorage ou Vuex (como preferir)
+        localStorage.setItem('token', response.data.data.jwt);
+
+        // Redireciona o usuário após o login bem-sucedido
+        this.$router.push('/admin'); // Exemplo de redirecionamento
+      } catch (error) {
+        // Trata o erro e exibe uma mensagem ao usuário
+        if (error.response && error.response.status === 401) {
+          this.errorMessage = 'Username ou senha inválidos';
+        } else {
+          this.errorMessage = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+        }
       }
-    },
-    submitRegister() {
-      if (this.registerUsername && this.registerPassword) {
-        alert('Registration successful!');
-        this.registerUsername = '';
-        this.registerPassword = '';
-        this.showRegister = false;
-      } else {
-        alert('Please fill out all fields.');
-      }
-    },
-  },
+    }
+  }
 };
 </script>
+
 
 <style scoped>
  @import url('https://fonts.cdnfonts.com/css/coolvetica-2');
