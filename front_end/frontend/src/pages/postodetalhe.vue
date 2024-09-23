@@ -1,102 +1,110 @@
 <template>
-  <div>
-    <NavBar position="relative" />
-
-    <div class="page-container">
-      
-      <header class="header">
-        <h1>Posto: {{ posto }}</h1>
-        <p>Endereço: {{ endereco }}</p>
-        <p>Status: {{ status }}</p>
-        <p>Bikes disponíveis: {{ bikesDisponiveis }}</p>
-      </header>
-
-      
-      <section class="bikes-section">
-        
-        <div class="bike-card">
-          <h2>Bikes de Adultos</h2>
-          <div class="bike-icons">
-            <img src="@/assets/bike-icon.png" alt="bike adulto" v-for="n in 6" :key="n" />
-          </div>
-        </div>
-
-        
-        <div class="bike-card">
-          <h2>Bikes Infantis</h2>
-          <div class="bike-icons">
-            <img src="@/assets/bike-icon.png" alt="bike infantil" v-for="n in 6" :key="n" />
-          </div>
-        </div>
-      </section>
+  <div class="page" v-if="unidade">
+    <div class="header">
+      <h1>{{ unidade.nameUnidade }}</h1>
+      <h2>Endereço: {{ unidade.endereco }}</h2>
     </div>
+    <div v-if="isAdmin">
+      <RouterLink class="bntAdmin" :to="`/posto/${unidade.id}/servicos`">
+        SERVIÇO DE ALUGUEL DE BIKES
+      </RouterLink>
+    </div>
+
+    <div class="subTitulo">
+      <h3>Bikes disponíveis neste posto</h3>
+    </div>
+    <qntBikes :bikes="unidade.bikes" />
+  </div>
+
+  <div v-else>
+    <p>Carregando dados...</p>
   </div>
 </template>
 
-<script>
-import NavBar from '@/components/NavBar.vue'; 
+<script lang="ts">
+import axios from 'axios';
+import { defineComponent } from 'vue';
+import { useAuthStore } from '@/store/auth';
+import qntBikes, { type Bike } from '@/components/qntBikes.vue'; // Importando o componente e tipo
 
-export default {
-  name: 'Postos',
+export interface Unidade {
+  id: number;
+  nameUnidade: string;
+  endereco: string;
+  bikes: Bike[];
+}
+
+export default defineComponent({
   components: {
-    NavBar, 
+    qntBikes
   },
   data() {
     return {
-      posto: "Posto Central",
-      endereco: "Rhaenyra rainha, 235", 
-      status: "Aberto",
-      bikesDisponiveis: 12,
+      unidade: null as Unidade | null
     };
   },
-};
+  computed: {
+    isAdmin() {
+      const authStore = useAuthStore(); // Acessando o Pinia store
+      return authStore.isAdmin; // Getter para verificar se o usuário é admin
+    }
+  },
+  methods: {
+    async fetchUnidadeData() {
+      try {
+        const response = await axios.get(`http://localhost:3000/postos/${this.$route.params.id}`);
+        this.unidade = response.data.data;
+      } catch (error) {
+        console.error('Erro ao buscar unidade:', error);
+      }
+    }
+  },
+  mounted() {
+    this.fetchUnidadeData();
+  }
+});
 </script>
 
 <style scoped>
-.page-container {
-  text-align: center;
-  background-color: white;
-  padding: 20px;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Madimi+One&display=swap');
+
+.page {
+  margin-top: 80px;
 }
 
 .header {
-  margin-bottom: 40px;
-}
-
-.bikes-section {
   display: flex;
-  justify-content: center;
-  gap: 25px; 
-}
-
-.bike-card {
-  background-color: #F1EC41;
-  border-radius: 20px;
-  width: 276px;
-  height: 347px; 
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  font-size: xx-large;
+  font-weight: 800;
+}
+
+.bntAdmin {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 700px;
+  height: 70px;
+  margin-left: 33%;
+
+
+  background-color: #f1ec41;
+  border-radius: 30px;
+  font-family: "Inter", sans-serif;
+  font-size: 40px;
   color: black;
+  font-weight: bold;
+  text-decoration: none;
 }
 
-.bike-icons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  justify-items: center;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.bike-icons img {
-  width: 80px; 
-  height: auto; 
-  display: block;
+.subTitulo {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  font-size: xx-large;
+  font-weight: bold;
 }
 </style>
-
-  

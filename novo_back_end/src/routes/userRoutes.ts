@@ -9,8 +9,6 @@ import { Posto } from "../entity/Postos";
 
 const router = Router();
 
-router.use(authenticateJWT) // Descomente para bloquear/desbloquear todas as rotas
-
 router.post('/', async (req, res) => {  // Criar Usuário
     const { name, username, email, password, role } = req.body;
 
@@ -49,6 +47,10 @@ router.post('/', async (req, res) => {  // Criar Usuário
         data: newUser
     });
 });
+
+router.use(authenticateJWT) // Descomente para bloquear/desbloquear todas as rotas
+
+
 
 router.get('/', async (req, res) => {   // Lista todos os Usuários
     const userRepository = AppDataSource.getRepository(User);

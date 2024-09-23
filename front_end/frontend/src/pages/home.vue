@@ -6,6 +6,8 @@
 
       <h1 class="titulo">Bem vindos ao byKeria!</h1>
     </div>
+
+  
   </template>
   
   <script setup lang="ts">
