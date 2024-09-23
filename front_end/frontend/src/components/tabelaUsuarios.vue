@@ -5,10 +5,10 @@
         <th>Id</th>
         <th>Nome</th>
         <th>Username</th>
-        <th>Email</th>
-        <th>Bikes</th>
-        <th>Role</th>
-        <th>Ações</th>
+        <th>Bikes Adultas</th>
+        <th>Bikes Infantis</th>
+        <th>Serviço</th>
+        <th>Deletar</th>
       </tr>
     </thead>
     <tbody>
@@ -16,15 +16,18 @@
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.bikes.length }}</td>
-        <td>{{ user.role.name }}</td>
+        <!-- Contagem de bikes adultas -->
+        <td>{{ countBikes(user.bikes, 'adulto') }}</td>
+        <!-- Contagem de bikes infantis -->
+        <td>{{ countBikes(user.bikes, 'infantil') }}</td>
+        <!-- Botão de serviço -->
         <td>
-          <!-- Link para visualizar usuário -->
-          <RouterLink class="btn btn-sm btn-info" :to="`/users/${user.id}`">
-            <i class="bi bi-eye"></i>
-          </RouterLink>
-          <!-- Botão para excluir usuário -->
+          <button class="btn btn-sm btn-warning" @click="performService(user.id)">
+            <i class="bi bi-bicycle"></i>
+          </button>
+        </td>
+        <!-- Botão para excluir usuário -->
+        <td>
           <button @click="askToDelete(user.id)" class="btn btn-sm btn-danger">
             <i class="bi bi-trash"></i>
           </button>
@@ -35,28 +38,44 @@
 </template>
 
 <script setup lang="ts">
-// Tipagem dos usuários
+// Tipagem dos usuários e bikes
+interface Bike {
+  id: number;
+  type: string;  // 'adulto' ou 'infantil'
+}
+
 interface User {
   id: number;
   name: string;
   username: string;
-  email: string;
-  bikes: any[];
-  role: {
-    name: string;
-  };
+  bikes: Bike[];
 }
 
 // Receber props com tipagem correta
 const props = defineProps<{
   users: User[];
   askToDelete: (userId: number) => void;
+  performService: (userId: number) => void;
 }>();
+
+// Função para contar bikes de um tipo específico
+const countBikes = (bikes: Bike[], type: string) => {
+  return bikes.filter(bike => bike.type === type).length;
+};
 </script>
 
 <style scoped>
 .table {
   width: 100%;
   text-align: left;
+}
+.bi-bicycle {
+  color: yellow;
+}
+.btn-warning {
+  background-color: #f9c74f;
+}
+.btn-danger {
+  background-color: #f94144;
 }
 </style>
