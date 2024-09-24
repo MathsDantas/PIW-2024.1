@@ -27,7 +27,7 @@ import Cadastro from '@/components/cadastro.vue';
   .foto{
   width: 250vh;
   height: 100vh; 
-  background-image: url('../assets/bikes.jpg'); /* Caminho relativo para a imagem */
+  background-image: url('../assets/th.jpg'); /* Caminho relativo para a imagem */
   background-size: cover; /* A imagem cobrirá toda a área da div */
   background-position: center; /* Centraliza a imagem */
   background-repeat: no-repeat; /* Evita a repetição da imagem */
