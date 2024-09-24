@@ -42,6 +42,7 @@ async function fetchUsers() {
   }
 }
 
+
 // Função para excluir um usuário
 async function deleteUser(userId: number) {
   if (confirm('Tem certeza que deseja excluir este usuário?')) {
