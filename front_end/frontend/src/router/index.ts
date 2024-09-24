@@ -11,11 +11,11 @@ import servicos from '@/pages/servicos.vue';
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/login', name: 'Login', component: Login },
-  { path: '/register', name: 'Registro', component: Registro },
   { path: '/postos', name: 'Postos', component: Postos, meta: { requiresAuth: true } },
   { path: '/postos/:id', name: 'PostoDetalhe', component: Postodetalhe, meta: { requiresAuth: true } },
-  { path: '/postos/:id/servicos', name: 'servicos', component: servicos, meta: { requiresAuth: true, requiresAdmin: true } },
-  { path: '/admin', name: 'Administrador', component: Admin, meta: { requiresAuth: true, requiresAdmin: true } },
+  { path: '/register', name: 'Registro', component: Registro },
+  { path: '/posto/:id/servicos', name: 'servicos', component: servicos, meta: { requiresAuth: true, requiresAdmin: true } }, // Rota protegida
+  { path: '/admin', name: 'Administrador', component: Admin },
   { path: '/logout', name: 'Logout', component: {
       template: '<div></div>', // Componente vazio
       beforeRouteEnter(to: any, from: any, next: (arg0: string) => void) {

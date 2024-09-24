@@ -1,56 +1,13 @@
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
 import TabelaUsuarios from '@/components/tabelaUsuarios.vue';
-import QntBikes from '@/components/qntBikes.vue';
+import BikesDisponiveis from "@/components/Bikes.vue";
 import axios from 'axios';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/store/auth';
 import CadastroModal from '@/components/cadastroModal.vue';
-import router from '@/router';
 
-// Interceptor para adicionar o JWT no cabeçalho de todas as requisições
-axios.interceptors.request.use((config) => {
-  const authStore = useAuthStore();
-  const token = authStore.jwt;
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
-// Interceptor para lidar com respostas 401 (Unauthorized)
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
-  const authStore = useAuthStore();
-
-  if (error.response && error.response.status === 401) {
-    authStore.clearAuthData(); // Limpa os dados de autenticação no Pinia e localStorage
-    // Redireciona para a página de login
-    router.push('/login');
-  }
-
-  return Promise.reject(error);
-});
-
-// Tipagem para a unidade e usuário
-interface Bike {
-  id: number;
-  type: string;
-  status: string; // Propriedade opcional
-}
-
-interface Unidade {
-  id: number;
-  nameUnidade: string;
-  endereco: string;
-  bikes: Bike[];
-}
-
+// Tipagem para um usuário
 interface User {
   id: number;
   name: string;
@@ -62,21 +19,18 @@ interface User {
   };
 }
 
-const unidade = ref<Unidade | null>(null);
-const users = ref<User[]>([]);
-const showModal = ref(false);
 const authStore = useAuthStore();
-let fetchInterval: number | null = null; // Variável para armazenar o intervalo
+const users = ref<User[]>([]);
+const showModal = ref(false); // Controlar a visibilidade do modal
 
-// Função para buscar a unidade com base no ID da URL
-async function fetchUnidadeData() {
-  try {
-    const response = await axios.get(`http://localhost:3000/postos/${window.location.pathname.split('/')[2]}`);
-    unidade.value = response.data.data;
-  } catch (error) {
-    console.error('Erro ao buscar unidade:', error);
+// Configurar o interceptor para adicionar o JWT às requisições
+axios.interceptors.request.use((config) => {
+  const token = authStore.jwt;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-}
+  return config;
+});
 
 // Função para buscar os usuários
 async function fetchUsers() {
@@ -97,12 +51,18 @@ async function deleteUser(userId: number) {
           Authorization: `Bearer ${authStore.jwt}`
         }
       });
+      // Atualizar o estado local removendo o usuário da lista
       users.value = users.value.filter(user => user.id !== userId);
     } catch (error) {
       console.error('Erro ao excluir usuário:', error);
       alert('Erro ao excluir usuário.');
     }
   }
+}
+
+// Função para pedir confirmação de exclusão
+function askToDelete(id: number) {
+  deleteUser(id);
 }
 
 // Função para abrir o modal
@@ -117,27 +77,14 @@ function closeModal() {
 
 // Função para tratar o evento de criação de usuário
 function onUserCreated() {
+  // Atualizar a lista de usuários após a criação de um novo usuário
   fetchUsers();
   closeModal();
 }
 
-// Carregar os dados ao montar o componente e definir o intervalo
+// Carregar os usuários ao montar o componente
 onMounted(() => {
-  fetchUnidadeData();
   fetchUsers();
-
-  // Definir intervalo para buscar os dados a cada 10 segundos (10.000 ms)
-  fetchInterval = window.setInterval(() => {
-    fetchUnidadeData();
-    fetchUsers();
-  }, 100);
-});
-
-// Limpar o intervalo quando o componente for desmontado
-onUnmounted(() => {
-  if (fetchInterval) {
-    clearInterval(fetchInterval);
-  }
 });
 </script>
 
@@ -145,15 +92,32 @@ onUnmounted(() => {
   <div class="pag">
     <NavBar position="absolute" />
 
-    <div class="logo" v-if="unidade">
-      <h3>{{ unidade.nameUnidade }}</h3>
-      <h4>{{ unidade.endereco }}</h4>
+    <div class="logo">
+      <h1>LOGO</h1>
+      <h3>Posto Central</h3>
+      <h4>Rua Rhaenyra Rainha, 235</h4>
     </div>
 
     <div class="content-container">
-      <!-- Primeiro container: bikes disponíveis -->
-      <div class="left-container" v-if="unidade">
-        <QntBikes :bikes="unidade.bikes" />
+      <!-- Primeiro container -->
+      <div class="left-container">
+        <BikesDisponiveis />
+      </div>
+
+      <div class="meio">
+        <div class="bnt-alugar">
+          <h2>Alugar</h2>
+          <button type="button" class="btn btn-warning">
+            <i class="bi bi-arrow-right-square-fill"></i>
+          </button>
+        </div>
+
+        <div class="bnt-devolver">
+          <h2>Devolver</h2>
+          <button type="button" class="btn btn-warning">
+            <i class="bi bi-arrow-left-square-fill"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Segundo container: tabela de usuários -->
@@ -162,7 +126,7 @@ onUnmounted(() => {
           <i class="bi bi-plus-circle-fill"></i>
           Adicionar Usuário
         </button>
-        <TabelaUsuarios :users="users" :askToDelete="deleteUser" />
+        <TabelaUsuarios :users="users" :askToDelete="askToDelete" />
       </div>
     </div>
 
@@ -170,6 +134,7 @@ onUnmounted(() => {
     <div v-if="showModal" class="modal-overlay">
       <div class="modal-content">
         <button @click="closeModal" class="close-btn">X</button>
+        <!-- Formulário de cadastro de usuário -->
         <CadastroModal @userCreated="onUserCreated" @close="closeModal" />
       </div>
     </div>
@@ -216,7 +181,7 @@ button.btn.btn-primary.btn-lg:hover {
   padding: 20px;
   min-height: 400px;
   max-height: 600px;
-  max-width: 50%;
+  max-width: 45%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -229,8 +194,17 @@ button.btn.btn-primary.btn-lg:hover {
   border: 1px solid #ddd;
   height: auto;
   max-height: 600px;
-  max-width: 50%;
+  max-width: 45%;
   overflow-y: auto;
+}
+
+.meio {
+  height: 400px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 
 /* Modal styles */
