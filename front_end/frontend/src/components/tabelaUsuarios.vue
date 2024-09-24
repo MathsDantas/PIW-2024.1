@@ -7,7 +7,7 @@
         <th>Username</th>
         <th>Bikes Adultas</th>
         <th>Bikes Infantis</th>
-        <th>Ações</th>
+        <th>Devolução</th>
         <th>Deletar</th>
       </tr>
     </thead>
@@ -51,7 +51,7 @@
         <!-- Botão para excluir usuário -->
         <td>
           <button @click="askToDelete(user.id)" class="btn btn-sm btn-danger">
-            <i class="bi bi-trash"></i>
+            <i class="bi bi-trash3-fill"></i>
           </button>
         </td>
       </tr>
@@ -61,6 +61,7 @@
 
 <script setup lang="ts">
 import axios from 'axios';
+import { useRoute } from 'vue-router';
 
 // Tipagem dos usuários e bikes
 interface Bike {
@@ -81,6 +82,10 @@ const props = defineProps<{
   askToDelete: (userId: number) => void;
 }>();
 
+// Capturar o ID do posto a partir da URL
+const route = useRoute();
+const postoId = route.params.id;
+
 // Função para contar bikes de um tipo específico
 const countBikes = (bikes: Bike[], type: string) => {
   return bikes.filter(bike => bike.type === type).length;
@@ -96,7 +101,6 @@ const isBikeAvailable = async (type: string) => {
 
 // Função para alugar bikes
 const rentBike = async (userId: number, type: string) => {
-  const postoId = 1; // ID do posto, modifique conforme necessário
   const data = {
     userId,
     bikesAdu: type === 'adulto' ? 1 : 0,
@@ -115,7 +119,6 @@ const rentBike = async (userId: number, type: string) => {
 
 // Função para devolver todas as bikes de um usuário
 const returnAllBikes = async (userId: number) => {
-  const postoId = 1; // ID do posto, modifique conforme necessário
   const url = `http://localhost:3000/users/${userId}/devolver/${postoId}`;
 
   try {
@@ -132,16 +135,19 @@ const returnAllBikes = async (userId: number) => {
 <style scoped>
 .table {
   width: 100%;
-  text-align: left;
+  text-align: center;
+  margin-top: 10px;
 }
 .bi-trash {
   color: red;
 }
 .btn-primary {
   background-color: #4faddb;
+  font-weight: bold;
 }
 .btn-warning {
   background-color: #f9c74f;
+  font-weight: bold;
 }
 .btn-danger {
   background-color: #f94144;

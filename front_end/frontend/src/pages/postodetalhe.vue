@@ -5,7 +5,7 @@
       <h2>Endereço: {{ unidade.endereco }}</h2>
     </div>
     <div v-if="isAdmin">
-      <RouterLink class="bntAdmin" :to="`/posto/${unidade.id}/servicos`">
+      <RouterLink class="bntAdmin" :to="`/postos/${unidade.id}/servicos`">
         SERVIÇO DE ALUGUEL DE BIKES
       </RouterLink>
     </div>
@@ -62,6 +62,37 @@ export default defineComponent({
   mounted() {
     this.fetchUnidadeData();
   }
+});
+
+import router from '@/router';
+
+// Interceptor para adicionar o JWT no cabeçalho de todas as requisições
+axios.interceptors.request.use((config) => {
+  const authStore = useAuthStore();
+  const token = authStore.jwt;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+// Interceptor para lidar com respostas 401 (Unauthorized)
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  const authStore = useAuthStore();
+
+  if (error.response && error.response.status === 401) {
+    authStore.clearAuthData(); // Limpa os dados de autenticação no Pinia e localStorage
+    // Redireciona para a página de login (ajuste conforme sua rota de login)
+    router.push('/login');
+  }
+
+  return Promise.reject(error);
 });
 </script>
 
