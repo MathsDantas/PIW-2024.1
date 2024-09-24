@@ -99,9 +99,7 @@ axios.interceptors.response.use(response => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Madimi+One&display=swap');
 
-.page {
-  margin-top: 80px;
-}
+
 
 .header {
   display: flex;
@@ -110,6 +108,8 @@ axios.interceptors.response.use(response => {
   justify-content: center;
   font-size: xx-large;
   font-weight: 800;
+  max-height: 100vh;
+  padding-top: 80px;
 }
 
 .bntAdmin {

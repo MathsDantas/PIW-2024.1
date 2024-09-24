@@ -178,7 +178,7 @@ onUnmounted(() => {
 
 <style scoped>
 .pag {
-  background-color: #f1f0c3;
+
   min-height: 100vh;
 }
 
@@ -212,7 +212,7 @@ button.btn.btn-primary.btn-lg:hover {
 
 .left-container {
   flex: 1;
-  background-color: #f7f7f7;
+
   padding: 20px;
   min-height: 400px;
   max-height: 600px;
@@ -224,9 +224,10 @@ button.btn.btn-primary.btn-lg:hover {
 
 .right-container {
   flex: 2;
-  background-color: #fff;
+
   padding: 20px;
   border: 1px solid #ddd;
+  height: auto;
   max-height: 600px;
   max-width: 50%;
   overflow-y: auto;

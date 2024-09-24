@@ -42,7 +42,6 @@ axios.interceptors.response.use(response => {
 </script>
 
 <template>
-  <NavBar position="absolute" />
   <div class="container">
     <cardPosto /> 
     

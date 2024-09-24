@@ -21,7 +21,7 @@ import Cadastro from '@/components/cadastro.vue';
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    background-color: #ffffff;
+  
   }
 
   .foto{

@@ -50,6 +50,7 @@
     background-color: #F1EC41; /* Cor amarela */
     font-family: "Inter", sans-serif;
     font-weight: bold;
+    color: black;
     font-size: 20px;
   }
   
@@ -68,6 +69,7 @@
   .navbar-brand {
     font-family: 'Coolvetica', sans-serif;
     font-size: 25px;
+    color: black;
   }
   </style>
   

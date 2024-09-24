@@ -26,7 +26,7 @@ import NavBar from './components/NavBar.vue';
     <Login />
   </div>
 
-  <main>
+  <main class="page" >
 
     <router-view /> <!-- Aqui é onde o conteúdo da rota será renderizado -->
   </main>
@@ -35,6 +35,15 @@ import NavBar from './components/NavBar.vue';
 </template>
 
 <style scoped>
+
+.page {
+  min-height: 100vh;
+  background-image: url('./assets/bgprincipal.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+}
+
 header {
   line-height: 1.5;
 }
