@@ -104,21 +104,7 @@ onMounted(() => {
         <BikesDisponiveis />
       </div>
 
-      <div class="meio">
-        <div class="bnt-alugar">
-          <h2>Alugar</h2>
-          <button type="button" class="btn btn-warning">
-            <i class="bi bi-arrow-right-square-fill"></i>
-          </button>
-        </div>
-
-        <div class="bnt-devolver">
-          <h2>Devolver</h2>
-          <button type="button" class="btn btn-warning">
-            <i class="bi bi-arrow-left-square-fill"></i>
-          </button>
-        </div>
-      </div>
+      
 
       <!-- Segundo container: tabela de usuários -->
       <div class="right-container">
