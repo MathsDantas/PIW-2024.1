@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <div class="header-rectangle">
-      <h1 class="header-text">Lista de postos byKeria</h1>
+  <div  class="quad">
+    <div  >
+      <div class="header-rectangle">
+        <h1 class="header-text">Lista de postos byKeria</h1>
+      </div>
     </div>
     <div class="card-container">
       <div class="card" v-for="posto in postos" :key="posto.id">
@@ -43,14 +45,21 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Madimi+One&display=swap');
 @import url('https://fonts.cdnfonts.com/css/coolvetica-2');
 
+
+.quad {
+  padding-top: 0%;
+}
+
 .header-rectangle {
   width: calc(100% - 600px); 
-  background-color: yellow;
+  background-color: #F1EC41;
   border-radius: 100px;
   border: 5px solid black;
   padding: 20px;
-  margin: 100px auto 20px; 
+  margin-left: 23%;
+  margin-bottom: 200px;
   text-align: center;
+  margin-bottom: 0px;
 }
 
 .header-text {
@@ -65,7 +74,7 @@ export default {
   justify-content: center;
   flex-wrap: nowrap; 
   gap: 10px;
-  margin: 0 auto;
+  margin: 10px;
   padding: 10px;
 }
 
@@ -92,7 +101,7 @@ export default {
   align-items: center;
   text-align: center;
   padding: 20px;
-  background-color: yellow;
+  background-color: #F1EC41;
   border-radius: 30px;
 }
 
