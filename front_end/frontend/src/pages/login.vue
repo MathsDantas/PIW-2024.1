@@ -1,29 +1,30 @@
 <template>
-  <div>
-    <!-- Conteúdo principal -->
+  <div class="page" >
+
+    <div class="foto"></div>
     <div class="login-container">
       <h2 class="fonte mb-4">Login</h2>
       <form @submit.prevent="submitLogin">
         <div class="form-group mb-3">
-          <label for="username">Username</label>
+          <label for="username">Username:</label>
           <input
             v-model="username"
             type="text"
             id="username"
             class="form-control"
-            placeholder="Enter your username"
+            placeholder="Digite seu Username"
             required
           />
         </div>
 
         <div class="form-group mb-3">
-          <label for="password">Password</label>
+          <label for="password">Senha:</label>
           <input
             v-model="password"
             type="password"
             id="password"
             class="form-control"
-            placeholder="Enter your password"
+            placeholder="Digite sua Senha"
             required
           />
         </div>
@@ -37,11 +38,14 @@
 
       <!-- Link para criar uma conta -->
       <p class="text-center mt-3">
-        Não tem uma conta? 
+        Não tem uma conta? <br /> 
         <router-link to="/register">Crie uma agora</router-link>
       </p>
     </div>
+    
+    
   </div>
+
 </template>
 
 <script>
@@ -86,10 +90,35 @@ export default {
 
 
 <style scoped>
-/* Estilos da área de login e registro */
+
+.page {
+  display: flex;
+  width: 100vw; 
+  height: 100vh; 
+  align-items: center;
+  justify-content: center; /* Isso centraliza o conteúdo horizontalmente */
+  
+}
+
+.foto{
+  width: 120vh;
+  height: 100vh; 
+  background-image: url('../assets/bikes_amarelas.jpg'); /* Caminho relativo para a imagem */
+  background-size: cover; /* A imagem cobrirá toda a área da div */
+  background-position: center; /* Centraliza a imagem */
+  background-repeat: no-repeat; /* Evita a repetição da imagem */
+  }
+
+
 .login-container {
-  max-width: 400px;
-  margin: 100px auto 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch ;
+  height: 450px;
+  width: 400px;
+  font-size: 25px;
+  font-family: "Inter", sans-serif;
+  margin: 0 auto; /* Centraliza o container verticalmente */
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -103,6 +132,8 @@ export default {
 }
 
 .fonte {
-  font-family: 'Coolvetica', sans-serif;
+  font-family: "Inter", sans-serif;
+  font-size: 40px;
 }
+
 </style>

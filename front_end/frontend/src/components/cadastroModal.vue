@@ -150,35 +150,46 @@
   </script>
   
   <style scoped>
-  .modal-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
-  }
   
-  .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    position: relative;
-  }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .modal-container {
+       position: fixed;
+       top: 0;
+       left: 0;
+       right: 0;
+       bottom: 0;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+    }
   
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-  }
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      position: relative;
+    }
+  
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
   
   .register-container {
     font-family: "Inter", sans-serif;
@@ -192,5 +203,18 @@
     color: red;
     margin-top: 10px;
   }
+
+  .form-group button{
+    color: rgb(51, 45, 45);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .form-group button:hover {
+  background-color: #8d8d8d; 
+}
   </style>
+
   
