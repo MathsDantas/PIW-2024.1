@@ -58,11 +58,18 @@ Pequenas estações de aluguel de bicicletas espalhadas pela cidade, onde os usu
 
 **Frontend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+VUE.js
+Axios
+Pinia
+Cors
 
 **Backend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+Express
+SQlite
+Bcrypt
+TypeORM
+JsonWebToken
 
 
 ## :shipit: Operações implementadas para cada entidade da aplicação
@@ -70,9 +77,9 @@ Lista as tecnologias, frameworks e bibliotecas utilizados.
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Entidade 1 | X |  X  |  | X |
-| Entidade 2 | X |    |  X | X |
-| Entidade 3 | X |    |  |  |
+| Usuários | X |  X  | X | X |
+| Postos | X | X | X | X |
+| Bikes | X | X | - | - |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
@@ -80,5 +87,17 @@ Lista as tecnologias, frameworks e bibliotecas utilizados.
 
 | Método HTTP | URL |
 | --- | --- |
-| GET | api/entidade1/|
-| POST | api/entidade2 |
+| POST | /login|
+| GET | /logout|
+| --- | --- |
+| GET | /users|
+| GET | /users/:id|
+| POST | /users|
+| PUT | /users/:id|
+| DELET | /users/:id|
+| --- | --- |
+| GET | /postos|
+| GET | /postos/:id|
+| POST | /postos|
+| PUT | /postos/:id|
+| DELET | /postos/:id|
