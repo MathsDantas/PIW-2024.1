@@ -6,11 +6,13 @@ import Registro from '@/pages/registro.vue';
 import { useAuthStore } from '@/store/auth'; // Importa o store de autenticação
 import Postodetalhe from '@/pages/postodetalhe.vue';
 import servicos from '@/pages/servicos.vue';
+import userdetalhe from '@/pages/userdetalhe.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/login', name: 'Login', component: Login },
   { path: '/register', name: 'Registro', component: Registro },
+  { path: '/user/:id', name: 'UserDetalhe', component: userdetalhe, meta: { requiresAuth: true } },
   { path: '/postos', name: 'Postos', component: Postos, meta: { requiresAuth: true } },
   { path: '/postos/:id', name: 'PostoDetalhe', component: Postodetalhe, meta: { requiresAuth: true } },
   { path: '/postos/:id/servicos', name: 'servicos', component: servicos, meta: { requiresAuth: true, requiresAdmin: true } },

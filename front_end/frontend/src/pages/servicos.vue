@@ -9,7 +9,34 @@ import { useAuthStore } from '@/store/auth';
 import CadastroModal from '@/components/cadastroModal.vue';
 import router from '@/router';
 
-// Interceptors...
+
+axios.interceptors.request.use((config) => {
+  const authStore = useAuthStore();
+  const token = authStore.jwt;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  const authStore = useAuthStore();
+
+  if (error.response && error.response.status === 401) {
+    authStore.clearAuthData(); // Limpa os dados de autenticação no Pinia e localStorage
+    // Redireciona para a página de login
+    router.push('/login');
+  }
+
+  return Promise.reject(error);
+});
+
 
 const unidade = ref<Unidade | null>(null);
 const users = ref<User[]>([]);
@@ -36,10 +63,37 @@ async function fetchUsers() {
   }
 }
 
-// Delete user...
-// Open modal...
-// Close modal...
-// On user created...
+async function deleteUser(userId: number) {
+  if (confirm('Tem certeza que deseja excluir este usuário?')) {
+    try {
+      await axios.delete(`http://localhost:3000/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${authStore.jwt}`
+        }
+      });
+      users.value = users.value.filter(user => user.id !== userId);
+    } catch (error) {
+      console.error('Erro ao excluir usuário:', error);
+      alert('Erro ao excluir usuário.');
+    }
+  }
+}
+
+function openModal() {
+  showModal.value = true;
+}
+
+// Função para fechar o modal
+function closeModal() {
+  showModal.value = false;
+}
+
+// Função para tratar o evento de criação de usuário
+function onUserCreated() {
+  fetchUsers();
+  closeModal();
+}
+
 
 // Watcher para atualizar QntBikes quando unidade mudar
 watch(unidade, (newUnidade) => {
