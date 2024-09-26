@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-striped">
+  <table class="table table-striped custom-table">
     <thead>
       <tr>
         <th>Id</th>
@@ -48,9 +48,13 @@
             Devolver Todas
           </button>
         </td>
-        <!-- Botão para excluir usuário -->
+        <!-- Botão para excluir usuário, desabilitado se o usuário tiver bikes -->
         <td>
-          <button @click="askToDelete(user.id)" class="btn btn-sm btn-danger">
+          <button 
+            @click="askToDelete(user.id)" 
+            class="btn btn-sm btn-danger"
+            :disabled="user.bikes.length > 0"
+          >
             <i class="bi bi-trash3-fill"></i>
           </button>
         </td>
@@ -58,6 +62,7 @@
     </tbody>
   </table>
 </template>
+
 
 <script setup lang="ts">
 import axios from 'axios';
@@ -138,6 +143,15 @@ const returnAllBikes = async (userId: number) => {
   text-align: center;
   margin-top: 10px;
 }
+
+.custom-table tbody tr:nth-of-type(odd) {
+  background-color: #F1EC41 !important; /* Cor de fundo para linhas ímpares */
+}
+
+.custom-table tbody tr:nth-of-type(even) {
+  background-color: #FFF7A5 !important; /* Cor de fundo para linhas pares */
+}
+
 .bi-trash {
   color: red;
 }
@@ -151,5 +165,8 @@ const returnAllBikes = async (userId: number) => {
 }
 .btn-danger {
   background-color: #f94144;
+}
+button:disabled {
+  opacity: 0.3;
 }
 </style>

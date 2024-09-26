@@ -3,7 +3,6 @@ import Home from '../pages/home.vue';
 import Login from '../pages/login.vue';
 import Postos from '../pages/postos.vue';
 import Registro from '@/pages/registro.vue';
-import Admin from '@/pages/Admin.vue';
 import { useAuthStore } from '@/store/auth'; // Importa o store de autenticação
 import Postodetalhe from '@/pages/postodetalhe.vue';
 import servicos from '@/pages/servicos.vue';
@@ -15,7 +14,6 @@ const routes = [
   { path: '/postos', name: 'Postos', component: Postos, meta: { requiresAuth: true } },
   { path: '/postos/:id', name: 'PostoDetalhe', component: Postodetalhe, meta: { requiresAuth: true } },
   { path: '/postos/:id/servicos', name: 'servicos', component: servicos, meta: { requiresAuth: true, requiresAdmin: true } },
-  { path: '/admin', name: 'Administrador', component: Admin, meta: { requiresAuth: true, requiresAdmin: true } },
   { path: '/logout', name: 'Logout', component: {
       template: '<div></div>', // Componente vazio
       beforeRouteEnter(to: any, from: any, next: (arg0: string) => void) {
