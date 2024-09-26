@@ -62,19 +62,9 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import type { Bike, User } from '@/types/index';
 
-// Tipagem dos usuários e bikes
-interface Bike {
-  id: number;
-  type: string;  // 'adulto' ou 'infantil'
-}
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  bikes: Bike[];
-}
 
 // Receber props com tipagem correta
 const props = defineProps<{

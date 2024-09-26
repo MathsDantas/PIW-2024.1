@@ -86,19 +86,12 @@
   import { reactive, ref } from 'vue';
   import axios from 'axios';
   import { defineEmits } from 'vue';
+  import type { RegisterForm } from '@/types/index';
   
   // Definir os eventos que este componente pode emitir
   const emit = defineEmits(['close', 'userCreated']);
   
-  // Definir a interface para os dados do formulário
-  interface RegisterForm {
-    email: string;
-    name: string;
-    username: string;
-    password: string;
-    confirmPassword: string;
-    role: string;
-  }
+ 
   
   // Dados reativos do formulário
   const formData = reactive<RegisterForm>({

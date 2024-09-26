@@ -4,6 +4,7 @@ import TabelaUsuarios from '@/components/tabelaUsuarios.vue';
 import QntBikes from '@/components/qntBikes.vue';
 import axios from 'axios';
 import { ref, onMounted, onUnmounted } from 'vue';
+import type { User, Bike, Unidade } from '@/types/index';
 import { useAuthStore } from '@/store/auth';
 import CadastroModal from '@/components/cadastroModal.vue';
 import router from '@/router';
@@ -37,30 +38,7 @@ axios.interceptors.response.use(response => {
   return Promise.reject(error);
 });
 
-// Tipagem para a unidade e usuário
-interface Bike {
-  id: number;
-  type: string;
-  status: string; // Propriedade opcional
-}
 
-interface Unidade {
-  id: number;
-  nameUnidade: string;
-  endereco: string;
-  bikes: Bike[];
-}
-
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  bikes: any[];
-  role: {
-    name: string;
-  };
-}
 
 const unidade = ref<Unidade | null>(null);
 const users = ref<User[]>([]);

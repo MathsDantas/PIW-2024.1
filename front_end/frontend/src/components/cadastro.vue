@@ -89,16 +89,9 @@
   import { reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import axios from 'axios';
+  import type { RegisterForm } from '@/types/index';
   
-  // Definindo a interface para os dados do formulário
-  interface RegisterForm {
-    email: string;
-    name: string;
-    username: string;
-    password: string;
-    confirmPassword: string;
-    role: string;
-  }
+ 
   
   // Dados reativos do formulário
   const formData = reactive<RegisterForm>({
