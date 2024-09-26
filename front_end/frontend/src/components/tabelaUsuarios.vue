@@ -16,7 +16,6 @@
         <td>{{ user.id }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.username }}</td>
-        <!-- Coluna de bikes adultas com opção de alugar -->
         <td>
           {{ countBikes(user.bikes, 'adulto') }}
           <button 
@@ -27,7 +26,6 @@
             Alugar Adulto
           </button>
         </td>
-        <!-- Coluna de bikes infantis com opção de alugar -->
         <td>
           {{ countBikes(user.bikes, 'infantil') }}
           <button 
@@ -38,7 +36,6 @@
             Alugar Infantil
           </button>
         </td>
-        <!-- Botão para devolver todas as bikes -->
         <td>
           <button 
             class="btn btn-sm btn-warning" 
@@ -48,7 +45,6 @@
             Devolver Todas
           </button>
         </td>
-        <!-- Botão para excluir usuário, desabilitado se o usuário tiver bikes -->
         <td>
           <button 
             @click="askToDelete(user.id)" 
@@ -63,21 +59,18 @@
   </table>
 </template>
 
-
 <script setup lang="ts">
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import type { Bike, User } from '@/types/index';
 
-
-
 // Receber props com tipagem correta
 const props = defineProps<{
   users: User[];
   askToDelete: (userId: number) => void;
+  onUpdateUsers: () => void; // Adicionei uma prop para atualizar os usuários
 }>();
 
-// Capturar o ID do posto a partir da URL
 const route = useRoute();
 const postoId = route.params.id;
 
@@ -88,7 +81,6 @@ const countBikes = (bikes: Bike[], type: string) => {
 
 // Função para verificar a disponibilidade de bikes no backend
 const isBikeAvailable = async (type: string) => {
-  // Exemplo de resposta do backend para verificar bikes disponíveis
   const availableBikes = await fetch(`/api/bikes/available?type=${type}`)
     .then(res => res.json());
   return availableBikes.length > 0;
@@ -105,7 +97,7 @@ const rentBike = async (userId: number, type: string) => {
   try {
     await axios.post(`http://localhost:3000/postos/${postoId}/alugar`, data);
     alert(`${type === 'adulto' ? 'Bike adulta' : 'Bike infantil'} alugada com sucesso!`);
-    // Aqui você pode atualizar a lista de usuários ou recarregar os dados
+    props.onUpdateUsers(); // Atualiza a lista de usuários após alugar
   } catch (error) {
     console.error('Erro ao alugar bike:', error);
     alert('Erro ao alugar bike.');
@@ -119,7 +111,7 @@ const returnAllBikes = async (userId: number) => {
   try {
     await axios.post(url);
     alert('Bikes devolvidas com sucesso!');
-    // Aqui você pode atualizar a lista de usuários ou recarregar os dados
+    props.onUpdateUsers(); // Atualiza a lista de usuários após devolver
   } catch (error) {
     console.error('Erro ao devolver bikes:', error);
     alert('Erro ao devolver bikes.');

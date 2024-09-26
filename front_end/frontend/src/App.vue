@@ -5,26 +5,8 @@ import NavBar from './components/NavBar.vue';
 </script>
 
 <template>
-
-<div class="admin-page">
-    <!-- Bikes disponíveis para alugar -->
-    <BikesDisponiveis />
-    
-    <!-- Botões de Ação (Alugar ou Devolver) -->
-    <AlugarDevolver />
-
-    <!-- Informações do cliente -->
-    <ClienteInfo />
-
-    
-</div>
   
   <NavBar position="absolute"/>
-  
-
-  <div id="app">
-    <Login />
-  </div>
 
   <main class="page" >
 

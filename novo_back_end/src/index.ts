@@ -3,6 +3,7 @@ import userRoutes from './routes/userRoutes'
 import { AppDataSource } from './DataSource'
 import authRotes from './routes/authRouter'
 import postoRoutes from './routes/postoRoutes'
+import bikeRoutes from './routes/bikeRoutes';
 import cors from 'cors'
 
 
@@ -21,8 +22,8 @@ async function startServer () {
         app.use(express.json())
         app.use('/', authRotes)
         app.use('/users', userRoutes)
-        app.use('/postos', postoRoutes)
-        
+        app.use('/postos', postoRoutes)    
+        app.use('/bikes', bikeRoutes);    
         
         app.listen(port, () => {
             console.log(`Servidor escutanto na porta ${port} em http://localhost:${port}`)

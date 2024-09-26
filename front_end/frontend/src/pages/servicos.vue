@@ -3,50 +3,20 @@ import NavBar from '@/components/NavBar.vue';
 import TabelaUsuarios from '@/components/tabelaUsuarios.vue';
 import QntBikes from '@/components/qntBikes.vue';
 import axios from 'axios';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import type { User, Bike, Unidade } from '@/types/index';
 import { useAuthStore } from '@/store/auth';
 import CadastroModal from '@/components/cadastroModal.vue';
 import router from '@/router';
 
-// Interceptor para adicionar o JWT no cabeçalho de todas as requisições
-axios.interceptors.request.use((config) => {
-  const authStore = useAuthStore();
-  const token = authStore.jwt;
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
-// Interceptor para lidar com respostas 401 (Unauthorized)
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
-  const authStore = useAuthStore();
-
-  if (error.response && error.response.status === 401) {
-    authStore.clearAuthData(); // Limpa os dados de autenticação no Pinia e localStorage
-    // Redireciona para a página de login
-    router.push('/login');
-  }
-
-  return Promise.reject(error);
-});
-
-
+// Interceptors...
 
 const unidade = ref<Unidade | null>(null);
 const users = ref<User[]>([]);
 const showModal = ref(false);
 const authStore = useAuthStore();
-let fetchInterval: number | null = null; // Variável para armazenar o intervalo
 
-// Função para buscar a unidade com base no ID da URL
+// Fetch unit data
 async function fetchUnidadeData() {
   try {
     const response = await axios.get(`http://localhost:3000/postos/${window.location.pathname.split('/')[2]}`);
@@ -56,7 +26,7 @@ async function fetchUnidadeData() {
   }
 }
 
-// Função para buscar os usuários
+// Fetch users
 async function fetchUsers() {
   try {
     const response = await axios.get('http://localhost:3000/users');
@@ -66,56 +36,21 @@ async function fetchUsers() {
   }
 }
 
-// Função para excluir um usuário
-async function deleteUser(userId: number) {
-  if (confirm('Tem certeza que deseja excluir este usuário?')) {
-    try {
-      await axios.delete(`http://localhost:3000/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${authStore.jwt}`
-        }
-      });
-      users.value = users.value.filter(user => user.id !== userId);
-    } catch (error) {
-      console.error('Erro ao excluir usuário:', error);
-      alert('Erro ao excluir usuário.');
-    }
-  }
-}
+// Delete user...
+// Open modal...
+// Close modal...
+// On user created...
 
-// Função para abrir o modal
-function openModal() {
-  showModal.value = true;
-}
+// Watcher para atualizar QntBikes quando unidade mudar
+watch(unidade, (newUnidade) => {
+  // Quando a unidade for atualizada, aqui você pode fazer qualquer ação
+  // adicional que precisar.
+});
 
-// Função para fechar o modal
-function closeModal() {
-  showModal.value = false;
-}
-
-// Função para tratar o evento de criação de usuário
-function onUserCreated() {
-  fetchUsers();
-  closeModal();
-}
-
-// Carregar os dados ao montar o componente e definir o intervalo
+// On mounted
 onMounted(() => {
   fetchUnidadeData();
   fetchUsers();
-
-  // Definir intervalo para buscar os dados a cada 10 segundos (10.000 ms)
-  fetchInterval = window.setInterval(() => {
-    fetchUnidadeData();
-    fetchUsers();
-  }, 100);
-});
-
-// Limpar o intervalo quando o componente for desmontado
-onUnmounted(() => {
-  if (fetchInterval) {
-    clearInterval(fetchInterval);
-  }
 });
 </script>
 
@@ -129,22 +64,20 @@ onUnmounted(() => {
     </div>
 
     <div class="content-container">
-      <!-- Primeiro container: bikes disponíveis -->
       <div class="left-container" v-if="unidade">
-        <QntBikes :bikes="unidade.bikes" />
+        <!-- Aqui você deve garantir que QntBikes está recebendo as bikes -->
+        <QntBikes :bikes="unidade.bikes" @update-bikes="fetchUnidadeData"  />
       </div>
 
-      <!-- Segundo container: tabela de usuários -->
       <div class="right-container">
         <button type="button" class="btn btn-primary btn-lg" @click="openModal">
           <i class="bi bi-plus-circle-fill"></i>
           Adicionar Usuário
         </button>
-        <TabelaUsuarios :users="users" :askToDelete="deleteUser" />
+        <TabelaUsuarios :users="users" :askToDelete="deleteUser" :onUpdateUsers="fetchUsers" />
       </div>
     </div>
 
-    <!-- Modal para adicionar usuário -->
     <div v-if="showModal" class="modal-overlay">
       <div class="modal-content">
         <button @click="closeModal" class="close-btn">X</button>
@@ -154,9 +87,9 @@ onUnmounted(() => {
   </div>
 </template>
 
+
 <style scoped>
 .pag {
-
   min-height: 100vh;
 }
 
@@ -190,7 +123,6 @@ button.btn.btn-primary.btn-lg:hover {
 
 .left-container {
   flex: 1;
-
   padding: 20px;
   min-height: 400px;
   max-height: 600px;
@@ -202,7 +134,6 @@ button.btn.btn-primary.btn-lg:hover {
 
 .right-container {
   flex: 2;
-
   padding: 20px;
   border: 1px solid #ddd;
   height: auto;
