@@ -132,11 +132,12 @@
         // Redirecionar para a página de login
         router.push('/login');
       }
+      
     } catch (error) {
       // Tratamento de erros
       console.error(error);
       errorMessage.value = 'Erro ao criar a conta. Tente novamente.';
-    }
+    } 
   };
 </script>
   
