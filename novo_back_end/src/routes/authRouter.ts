@@ -25,7 +25,8 @@ router.post('/login', async (req, res) => {
             data: {
                 username: user.username,
                 email: user.email,
-                role: user.role.name, // Inclua o nome da role no retorno
+                role: user.role.name,
+                id: user.id,
                 jwt: token 
             }
         });

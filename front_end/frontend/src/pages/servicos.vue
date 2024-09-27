@@ -43,15 +43,29 @@ const users = ref<User[]>([]);
 const showModal = ref(false);
 const authStore = useAuthStore();
 
-// Fetch unit data
 async function fetchUnidadeData() {
   try {
     const response = await axios.get(`http://localhost:3000/postos/${window.location.pathname.split('/')[2]}`);
+    
+    // Atualiza todo o objeto de unidade
     unidade.value = response.data.data;
+
+    // Atualiza o array de bikes de maneira reativa
+    if (unidade.value && response.data.data.bikes) {
+      unidade.value.bikes = [...response.data.data.bikes]; // Garante que a mudança no array seja reativa
+    }
   } catch (error) {
     console.error('Erro ao buscar unidade:', error);
   }
 }
+function updateBikes(newBikes: any) {
+  if (unidade.value) {
+    unidade.value.bikes = [...newBikes]; // Redefine o array de bikes para ser reativo
+  }
+}
+
+
+
 
 // Fetch users
 async function fetchUsers() {
@@ -119,7 +133,7 @@ onMounted(() => {
 
     <div class="content-container">
       <div class="left-container" v-if="unidade">
-        <!-- Aqui você deve garantir que QntBikes está recebendo as bikes -->
+        
         <QntBikes :bikes="unidade.bikes" @update-bikes="fetchUnidadeData"  />
       </div>
 

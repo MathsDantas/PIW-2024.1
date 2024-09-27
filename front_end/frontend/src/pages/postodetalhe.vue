@@ -13,7 +13,8 @@
     <div class="subTitulo">
       <h3>Bikes disponíveis neste posto</h3>
     </div>
-    <qntBikes :bikes="unidade.bikes" @update-bikes="fetchUnidadeData" />
+    
+    <qntBikes :bikes="unidade.bikes"  @update-bikes="fetchUnidadeData" />
   </div>
 
   <div v-else>
@@ -25,24 +26,7 @@
 import axios from 'axios';
 import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/auth';
-import qntBikes, { type Bike } from '@/components/qntBikes.vue'; // Importando o componente
-
-axios.interceptors.request.use(
-  (config) => {
-    const authStore = useAuthStore();
-    const token = authStore.jwt; // Certifique-se de que o token está sendo recuperado do Pinia corretamente
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
+import qntBikes, { type Bike } from '@/components/qntBikes.vue'; // Importando o componente e tipo
 
 export interface Unidade {
   id: number;
@@ -68,26 +52,52 @@ export default defineComponent({
   },
   methods: {
     async fetchUnidadeData() {
-  try {
-    const response = await axios.get(`http://localhost:3000/postos/${this.$route.params.id}`);
-    console.log('Dados da unidade recebidos:', response.data);
-    this.unidade = response.data.data;
-  } catch (error) {
-    console.error('Erro ao buscar unidade:', error);
-  }
-}
-
+      try {
+        const response = await axios.get(`http://localhost:3000/postos/${this.$route.params.id}`);
+        this.unidade = response.data.data;
+      } catch (error) {
+        console.error('Erro ao buscar unidade:', error);
+      }
+    }
   },
   mounted() {
     this.fetchUnidadeData();
   }
 });
+
+import router from '@/router';
+
+// Interceptor para adicionar o JWT no cabeçalho de todas as requisições
+axios.interceptors.request.use((config) => {
+  const authStore = useAuthStore();
+  const token = authStore.jwt;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+// Interceptor para lidar com respostas 401 (Unauthorized)
+axios.interceptors.response.use(response => {
+  return response;
+}, error => {
+  const authStore = useAuthStore();
+
+  if (error.response && error.response.status === 401) {
+    authStore.clearAuthData(); // Limpa os dados de autenticação no Pinia e localStorage
+    // Redireciona para a página de login (ajuste conforme sua rota de login)
+    router.push('/login');
+  }
+
+  return Promise.reject(error);
+});
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Madimi+One&display=swap');
-
-
 
 .header {
   display: flex;
@@ -108,8 +118,6 @@ export default defineComponent({
   width: 700px;
   height: 70px;
   margin-left: 33%;
-
-
   background-color: #f1ec41;
   border-radius: 30px;
   font-family: "Inter", sans-serif;
