@@ -18,20 +18,7 @@
   </template>
   
   <script lang="ts">
-  export default {
-    data() {
-      return {
-        cliente: {
-          nome: "Carla",
-          username: "Carlinha",
-          email: "******@*****.com",
-          aluguelAdulto: 1,
-          aluguelInfantil: 0,
-          avatar: "https://link-para-avatar.com/avatar.jpg"
-        }
-      };
-    }
-  }
+
   </script>
   <style scoped>
   .clientes-info-section {

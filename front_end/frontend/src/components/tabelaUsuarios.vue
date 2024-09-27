@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
+import axiosInstance from '@/axios';
 import { useRoute } from 'vue-router';
 import type { Bike, User } from '@/types/index';
 
@@ -98,14 +98,14 @@ const rentBike = async (userId: number, type: string) => {
   };
 
   try {
-    await axios.post(`http://localhost:3000/postos/${postoId}/alugar`, data);
+    await axiosInstance.post(`http://localhost:3000/postos/${postoId}/alugar`, data);
     alert(`${type === 'adulto' ? 'Bike adulta' : 'Bike infantil'} alugada com sucesso!`);
     
     // Atualiza a lista de usuários após alugar
     props.onUpdateUsers();
 
-    // Suponha que você tenha uma maneira de obter as bikes atualizadas após o aluguel
-    const updatedBikes = await fetchUpdatedBikes(); // Função hipotética para obter bikes atualizadas
+    
+    const updatedBikes = await fetchUpdatedBikes(); 
 
     // Emitir o evento com as bikes atualizadas
     emit('bikesUpdated', updatedBikes);
@@ -115,19 +115,19 @@ const rentBike = async (userId: number, type: string) => {
   }
 };
 
-// Função para devolver todas as bikes de um usuário
+
 const returnAllBikes = async (userId: number) => {
   const url = `http://localhost:3000/users/${userId}/devolver/${postoId}`;
 
   try {
-    await axios.post(url);
+    await axiosInstance.post(url);
     alert('Bikes devolvidas com sucesso!');
     
     // Atualiza a lista de usuários após devolver
     props.onUpdateUsers();
     
-    // Suponha que você tenha uma maneira de obter as bikes atualizadas após a devolução
-    const updatedBikes = await fetchUpdatedBikes(); // Função hipotética para obter bikes atualizadas
+    
+    const updatedBikes = await fetchUpdatedBikes(); 
 
     // Emitir o evento com as bikes atualizadas
     emit('bikesUpdated', updatedBikes);
@@ -140,7 +140,7 @@ const returnAllBikes = async (userId: number) => {
 // Função hipotética para buscar bikes atualizadas
 async function fetchUpdatedBikes() {
   try {
-    const response = await axios.get(`http://localhost:3000/postos/${postoId}`);
+    const response = await axiosInstance.get(`http://localhost:3000/postos/${postoId}`);
     return response.data.data.bikes; // Retorna a lista de bikes atualizada
   } catch (error) {
     console.error('Erro ao buscar bikes atualizadas:', error);

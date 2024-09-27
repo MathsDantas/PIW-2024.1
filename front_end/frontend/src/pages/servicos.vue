@@ -2,7 +2,7 @@
 import NavBar from '@/components/NavBar.vue';
 import TabelaUsuarios from '@/components/tabelaUsuarios.vue';
 import QntBikes from '@/components/qntBikes.vue';
-import axios from 'axios';
+import axiosInstance from '@/axios';
 import { ref, onMounted, watch } from 'vue';
 import type { User, Bike, Unidade } from '@/types/index';
 import { useAuthStore } from '@/store/auth';
@@ -10,32 +10,7 @@ import CadastroModal from '@/components/cadastroModal.vue';
 import router from '@/router';
 
 
-axios.interceptors.request.use((config) => {
-  const authStore = useAuthStore();
-  const token = authStore.jwt;
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
-  const authStore = useAuthStore();
-
-  if (error.response && error.response.status === 401) {
-    authStore.clearAuthData(); // Limpa os dados de autenticação no Pinia e localStorage
-    // Redireciona para a página de login
-    router.push('/login');
-  }
-
-  return Promise.reject(error);
-});
 
 
 const unidade = ref<Unidade | null>(null);
@@ -45,14 +20,14 @@ const authStore = useAuthStore();
 
 async function fetchUnidadeData() {
   try {
-    const response = await axios.get(`http://localhost:3000/postos/${window.location.pathname.split('/')[2]}`);
+    const response = await axiosInstance.get(`/postos/${window.location.pathname.split('/')[2]}`);
     
-    // Atualiza todo o objeto de unidade
+    
     unidade.value = response.data.data;
 
-    // Atualiza o array de bikes de maneira reativa
+   
     if (unidade.value && response.data.data.bikes) {
-      unidade.value.bikes = [...response.data.data.bikes]; // Garante que a mudança no array seja reativa
+      unidade.value.bikes = [...response.data.data.bikes]; 
     }
   } catch (error) {
     console.error('Erro ao buscar unidade:', error);
@@ -60,7 +35,7 @@ async function fetchUnidadeData() {
 }
 function updateBikes(newBikes: Bike[]) {
   if (unidade.value) {
-    unidade.value.bikes = [...newBikes]; // Garante que a mudança no array seja reativa
+    unidade.value.bikes = [...newBikes]; 
   }
 }
 
@@ -71,7 +46,7 @@ function updateBikes(newBikes: Bike[]) {
 // Fetch users
 async function fetchUsers() {
   try {
-    const response = await axios.get('http://localhost:3000/users');
+    const response = await axiosInstance.get('http://localhost:3000/users');
     users.value = response.data.data;
   } catch (error) {
     console.error('Erro ao buscar os usuários:', error);
@@ -81,7 +56,7 @@ async function fetchUsers() {
 async function deleteUser(userId: number) {
   if (confirm('Tem certeza que deseja excluir este usuário?')) {
     try {
-      await axios.delete(`http://localhost:3000/users/${userId}`, {
+      await axiosInstance.delete(`http://localhost:3000/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${authStore.jwt}`
         }
@@ -110,10 +85,9 @@ function onUserCreated() {
 }
 
 
-// Watcher para atualizar QntBikes quando unidade mudar
+
 watch(unidade, (newUnidade) => {
-  // Quando a unidade for atualizada, aqui você pode fazer qualquer ação
-  // adicional que precisar.
+  
 });
 
 // On mounted

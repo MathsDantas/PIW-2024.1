@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosInstance from '@/axios';
 
 export default {
   data() {
@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     // Chamada para a API assim que o componente for montado
-    axios.get('http://localhost:3000/postos')  // URL da API
+    axiosInstance.get('http://localhost:3000/postos')  // URL da API
       .then(response => {
         console.log(response.data.data);  // Verificando os dados recebidos
         this.postos = response.data.data;

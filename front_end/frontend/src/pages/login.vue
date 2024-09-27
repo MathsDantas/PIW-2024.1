@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axiosInstance from '@/axios';
 import { useAuthStore } from '@/store/auth'; // Adicione esta linha
 
 export default {
@@ -64,7 +64,7 @@ export default {
     async submitLogin() {
       try {
         console.log("Tentando fazer login com:", this.username, this.password);
-        const response = await axios.post('http://localhost:3000/login', {
+        const response = await axiosInstance.post('http://localhost:3000/login', {
           username: this.username,
           password: this.password
         });

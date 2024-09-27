@@ -58,7 +58,7 @@
             />
           </div>
   
-          <!-- Adicionando o campo de seleção de role -->
+          
           <div class="form-group">
             <label for="role">Escolha seu tipo de conta:</label>
             <select v-model="formData.role" id="role" required>
@@ -88,7 +88,7 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import axios from 'axios';
+  import axiosInstance from '@/axios';
   import type { RegisterForm } from '@/types/index';
   
  
@@ -119,7 +119,7 @@
   
     try {
       // Fazer a requisição POST para o backend
-      const response = await axios.post('http://localhost:3000/users', {
+      const response = await axiosInstance.post('http://localhost:3000/users', {
         name: formData.name,
         username: formData.username,
         email: formData.email,

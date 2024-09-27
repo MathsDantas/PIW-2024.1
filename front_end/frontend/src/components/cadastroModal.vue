@@ -84,7 +84,7 @@
   
   <script setup lang="ts">
   import { reactive, ref } from 'vue';
-  import axios from 'axios';
+  import axiosInstance from '@/axios';
   import { defineEmits } from 'vue';
   import type { RegisterForm } from '@/types/index';
   
@@ -116,7 +116,7 @@
   
     try {
       // Requisição POST para criar o usuário
-      const response = await axios.post('http://localhost:3000/users', {
+      const response = await axiosInstance.post('http://localhost:3000/users', {
         name: formData.name,
         username: formData.username,
         email: formData.email,

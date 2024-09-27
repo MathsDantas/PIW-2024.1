@@ -37,16 +37,16 @@ import { useAuthStore } from '@/store/auth'; // Importa a store de autenticaçã
 const props = defineProps({
   position: {
     type: String,
-    default: 'relative', // Pode ser alterado para "absolute" nas páginas
+    default: 'relative', 
   }
 });
 
 
 
-// Carrega o estado de autenticação ao inicializar o componente
+
 const authStore = useAuthStore();
-authStore.loadAuthData(); // Carrega os dados de autenticação do localStorage
-const UserId = authStore.userId; // Acesse userId da store
+authStore.loadAuthData(); 
+const UserId = authStore.userId; 
 </script>
 
 <style scoped>

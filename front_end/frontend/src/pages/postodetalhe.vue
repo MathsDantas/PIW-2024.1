@@ -23,17 +23,12 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios';
+import axiosInstance from '@/axios';
 import { defineComponent } from 'vue';
 import { useAuthStore } from '@/store/auth';
 import qntBikes, { type Bike } from '@/components/qntBikes.vue'; // Importando o componente e tipo
+import type { Unidade } from '@/types/index';
 
-export interface Unidade {
-  id: number;
-  nameUnidade: string;
-  endereco: string;
-  bikes: Bike[];
-}
 
 export default defineComponent({
   components: {
@@ -53,7 +48,7 @@ export default defineComponent({
   methods: {
     async fetchUnidadeData() {
       try {
-        const response = await axios.get(`http://localhost:3000/postos/${this.$route.params.id}`);
+        const response = await axiosInstance.get(`http://localhost:3000/postos/${this.$route.params.id}`);
         this.unidade = response.data.data;
       } catch (error) {
         console.error('Erro ao buscar unidade:', error);
@@ -67,34 +62,7 @@ export default defineComponent({
 
 import router from '@/router';
 
-// Interceptor para adicionar o JWT no cabeçalho de todas as requisições
-axios.interceptors.request.use((config) => {
-  const authStore = useAuthStore();
-  const token = authStore.jwt;
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
-// Interceptor para lidar com respostas 401 (Unauthorized)
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
-  const authStore = useAuthStore();
-
-  if (error.response && error.response.status === 401) {
-    authStore.clearAuthData(); // Limpa os dados de autenticação no Pinia e localStorage
-    // Redireciona para a página de login (ajuste conforme sua rota de login)
-    router.push('/login');
-  }
-
-  return Promise.reject(error);
-});
 </script>
 
 <style scoped>
