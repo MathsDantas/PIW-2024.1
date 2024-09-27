@@ -16,7 +16,10 @@ const routes = [
   { path: '/postos', name: 'Postos', component: Postos, meta: { requiresAuth: true } },
   { path: '/postos/:id', name: 'PostoDetalhe', component: Postodetalhe, meta: { requiresAuth: true } },
   { path: '/postos/:id/servicos', name: 'servicos', component: servicos, meta: { requiresAuth: true, requiresAdmin: true } },
-  { path: '/logout', name: 'Logout', component: {
+  { 
+    path: '/logout', 
+    name: 'Logout', 
+    component: {
       template: '<div></div>', // Componente vazio
       beforeRouteEnter(to: any, from: any, next: (arg0: string) => void) {
         const authStore = useAuthStore();
@@ -24,9 +27,11 @@ const routes = [
         next('/'); // Redireciona para a página de home
       }
     }
+  },
+  { 
+    path: '/:catchAll(.*)', // Captura todas as rotas não definidas
+    redirect: '/' // Redireciona para a home
   }
-  
-  
 ];
 
 const router = createRouter({

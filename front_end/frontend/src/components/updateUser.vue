@@ -82,7 +82,7 @@
 <script setup lang="ts">
   import { reactive, ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
-  import axios from 'axios';
+  import axiosInstance from '@/axios';
   import type { RegisterForm } from '@/types/index';
   import { useAuthStore } from '@/store/auth';
   
@@ -110,7 +110,7 @@
   
   const fetchUserData = async () => {
   try {
-    const response = await axios.get(`http://localhost:3000/users/${UserId}`);
+    const response = await axiosInstance.get(`http://localhost:3000/users/${UserId}`);
     const userData = response.data.data;
 
     // Atribui os valores de userData a formData
@@ -140,7 +140,7 @@ const onSubmit = async () => {
   }
 
   try {
-    const response = await axios.put(`http://localhost:3000/users/${UserId}`, {
+    const response = await axiosInstance.put(`http://localhost:3000/users/${UserId}`, {
       name: formData.name,
       username: formData.username,
       email: formData.email,
