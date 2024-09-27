@@ -58,11 +58,12 @@ async function fetchUnidadeData() {
     console.error('Erro ao buscar unidade:', error);
   }
 }
-function updateBikes(newBikes: any) {
+function updateBikes(newBikes: Bike[]) {
   if (unidade.value) {
-    unidade.value.bikes = [...newBikes]; // Redefine o array de bikes para ser reativo
+    unidade.value.bikes = [...newBikes]; // Garante que a mudança no array seja reativa
   }
 }
+
 
 
 
@@ -142,7 +143,7 @@ onMounted(() => {
           <i class="bi bi-plus-circle-fill"></i>
           Adicionar Usuário
         </button>
-        <TabelaUsuarios :users="users" :askToDelete="deleteUser" :onUpdateUsers="fetchUsers" />
+        <TabelaUsuarios :users="users" :askToDelete="deleteUser" :onUpdateUsers="fetchUsers" @bikesUpdated="updateBikes" />
       </div>
     </div>
 

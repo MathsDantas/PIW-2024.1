@@ -71,6 +71,9 @@ const props = defineProps<{
   onUpdateUsers: () => void; // Adicionei uma prop para atualizar os usuários
 }>();
 
+// Declarar o sistema de emissão de eventos
+const emit = defineEmits(['bikesUpdated']);
+
 const route = useRoute();
 const postoId = route.params.id;
 
@@ -97,7 +100,15 @@ const rentBike = async (userId: number, type: string) => {
   try {
     await axios.post(`http://localhost:3000/postos/${postoId}/alugar`, data);
     alert(`${type === 'adulto' ? 'Bike adulta' : 'Bike infantil'} alugada com sucesso!`);
-    props.onUpdateUsers(); // Atualiza a lista de usuários após alugar
+    
+    // Atualiza a lista de usuários após alugar
+    props.onUpdateUsers();
+
+    // Suponha que você tenha uma maneira de obter as bikes atualizadas após o aluguel
+    const updatedBikes = await fetchUpdatedBikes(); // Função hipotética para obter bikes atualizadas
+
+    // Emitir o evento com as bikes atualizadas
+    emit('bikesUpdated', updatedBikes);
   } catch (error) {
     console.error('Erro ao alugar bike:', error);
     alert('Erro ao alugar bike.');
@@ -111,13 +122,33 @@ const returnAllBikes = async (userId: number) => {
   try {
     await axios.post(url);
     alert('Bikes devolvidas com sucesso!');
-    props.onUpdateUsers(); // Atualiza a lista de usuários após devolver
+    
+    // Atualiza a lista de usuários após devolver
+    props.onUpdateUsers();
+    
+    // Suponha que você tenha uma maneira de obter as bikes atualizadas após a devolução
+    const updatedBikes = await fetchUpdatedBikes(); // Função hipotética para obter bikes atualizadas
+
+    // Emitir o evento com as bikes atualizadas
+    emit('bikesUpdated', updatedBikes);
   } catch (error) {
     console.error('Erro ao devolver bikes:', error);
     alert('Erro ao devolver bikes.');
   }
 };
+
+// Função hipotética para buscar bikes atualizadas
+async function fetchUpdatedBikes() {
+  try {
+    const response = await axios.get(`http://localhost:3000/postos/${postoId}`);
+    return response.data.data.bikes; // Retorna a lista de bikes atualizada
+  } catch (error) {
+    console.error('Erro ao buscar bikes atualizadas:', error);
+    return [];
+  }
+}
 </script>
+
 
 <style scoped>
 .table {
