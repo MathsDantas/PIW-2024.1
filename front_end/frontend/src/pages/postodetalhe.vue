@@ -48,7 +48,7 @@ export default defineComponent({
   methods: {
     async fetchUnidadeData() {
       try {
-        const response = await axiosInstance.get(`http://localhost:3000/postos/${this.$route.params.id}`);
+        const response = await axiosInstance.get(`/postos/${this.$route.params.id}`);
         this.unidade = response.data.data;
       } catch (error) {
         console.error('Erro ao buscar unidade:', error);

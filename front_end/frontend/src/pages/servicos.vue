@@ -22,7 +22,7 @@ const route = useRoute();
 async function fetchUnidadeData() {
   try {
     const postoId = route.params.id;
-    const response = await axiosInstance.get(`http://localhost:3000/postos/${postoId}`);
+    const response = await axiosInstance.get(`/postos/${postoId}`);
     
     
     unidade.value = response.data.data;
@@ -48,7 +48,7 @@ function updateBikes(newBikes: Bike[]) {
 // Fetch users
 async function fetchUsers() {
   try {
-    const response = await axiosInstance.get('http://localhost:3000/users');
+    const response = await axiosInstance.get('/users');
     users.value = response.data.data;
   } catch (error) {
     console.error('Erro ao buscar os usuários:', error);
@@ -58,7 +58,7 @@ async function fetchUsers() {
 async function deleteUser(userId: number) {
   if (confirm('Tem certeza que deseja excluir este usuário?')) {
     try {
-      await axiosInstance.delete(`http://localhost:3000/users/${userId}`, {
+      await axiosInstance.delete(`/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${authStore.jwt}`
         }

@@ -110,7 +110,7 @@
   
   const fetchUserData = async () => {
   try {
-    const response = await axiosInstance.get(`http://localhost:3000/users/${UserId}`);
+    const response = await axiosInstance.get(`/users/${UserId}`);
     const userData = response.data.data;
 
    
@@ -139,7 +139,7 @@ const onSubmit = async () => {
   }
 
   try {
-    const response = await axiosInstance.put(`http://localhost:3000/users/${UserId}`, {
+    const response = await axiosInstance.put(`/users/${UserId}`, {
       name: formData.name,
       username: formData.username,
       email: formData.email,

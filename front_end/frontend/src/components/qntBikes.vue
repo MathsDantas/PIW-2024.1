@@ -54,7 +54,7 @@ export default defineComponent({
     // Função para recarregar as bikes quando houver mudanças
     const reloadBikes = async () => {
       try {
-        const response = await axiosInstance.get(`http://localhost:3000/postos/${postoId}`);
+        const response = await axiosInstance.get(`/postos/${postoId}`);
         emit('update-bikes', response.data.data.bikes); 
       } catch (error) {
         console.error('Erro ao recarregar as bikes:', error);
@@ -64,7 +64,7 @@ export default defineComponent({
     // Adicionar uma bike
     const addBike = async (type: string) => {
       try {
-        await axiosInstance.post(`http://localhost:3000/bikes`, {
+        await axiosInstance.post(`/bikes`, {
           type,
           status: 'disponível',
           postoId
@@ -80,7 +80,7 @@ export default defineComponent({
       try {
         const bikeToRemove = props.bikes.find(bike => bike.type === type && bike.status === 'disponível');
         if (bikeToRemove) {
-          await axiosInstance.delete(`http://localhost:3000/bikes/${bikeToRemove.id}`);
+          await axiosInstance.delete(`/bikes/${bikeToRemove.id}`);
           await reloadBikes(); 
         } else {
           alert('Nenhuma bike disponível para remoção.');

@@ -29,7 +29,7 @@ export default {
   },
   mounted() {
     
-    axiosInstance.get('http://localhost:3000/postos')  
+    axiosInstance.get('/postos')  
       .then(response => {
         console.log(response.data.data);  
         this.postos = response.data.data;

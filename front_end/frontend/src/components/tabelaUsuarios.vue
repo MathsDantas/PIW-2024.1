@@ -140,7 +140,7 @@ const returnAllBikes = async (userId: number) => {
 
 async function fetchUpdatedBikes() {
   try {
-    const response = await axiosInstance.get(`http://localhost:3000/postos/${postoId}`);
+    const response = await axiosInstance.get(`/postos/${postoId}`);
     return response.data.data.bikes; 
   } catch (error) {
     console.error('Erro ao buscar bikes atualizadas:', error);
