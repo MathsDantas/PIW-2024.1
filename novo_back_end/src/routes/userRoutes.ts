@@ -65,7 +65,7 @@ router.use(authenticateJWT) // Descomente para bloquear/desbloquear todas as rot
 
 router.get('/', async (req, res) => {   // Lista todos os Usuários
     const userRepository = AppDataSource.getRepository(User);
-    const users = await userRepository.find({ relations: ['role', 'bikes'] });  // Inclui as bikes
+    const users = await userRepository.find({ relations: ['role', 'bikes'] }); 
 
     res.json({
         data: users
@@ -78,7 +78,7 @@ router.get('/:id', async (req, res) => {  // Lista um Usuário
 
     const user = await userRepository.findOne({
         where: { id: parseInt(id) },
-        relations: ['role', 'bikes']  // Inclui as bikes
+        relations: ['role', 'bikes'] 
     });
 
     if (!user) {
@@ -99,11 +99,11 @@ router.get('/:id', async (req, res) => {  // Lista um Usuário
 router.delete('/:id', async (req, res) => {  // Deleta um usuário
     const { id } = req.params;  // Recupera o Id que veio pela URL
     const userRepository = AppDataSource.getRepository(User);
-    const bikeRepository = AppDataSource.getRepository(Bike);  // Adiciona o repositório de bikes
+    const bikeRepository = AppDataSource.getRepository(Bike); 
 
     const user = await userRepository.findOne({
         where: { id: parseInt(id) },
-        relations: ['role', 'bikes']  // Inclui as bikes para garantir que sejam removidas também
+        relations: ['role', 'bikes'] 
     });
 
     if (!user) {
@@ -116,7 +116,7 @@ router.delete('/:id', async (req, res) => {  // Deleta um usuário
         });
     }
 
-    // Remover as bikes associadas antes de deletar o usuário
+    
     if (user.bikes) {
         await bikeRepository.remove(user.bikes); // Removendo as bikes do banco de dados
     }
@@ -136,7 +136,7 @@ router.put('/:id', async (req, res) => {   // Atualiza um usuário
 
     const user = await userRepository.findOne({
         where: { id: parseInt(id) },
-        relations: ['role', 'bikes'],  // Inclui as bikes
+        relations: ['role', 'bikes'], 
     });
 
     if (!user) {
@@ -182,7 +182,7 @@ router.post('/:userId/devolver/:postoId', async (req, res) => {
     // Encontra o usuário
     const user = await userRepository.findOne({
         where: { id: parseInt(userId) },
-        relations: ['bikes']  // Inclui as bikes do usuário
+        relations: ['bikes']  
     });
 
     if (!user) {
@@ -211,17 +211,17 @@ router.post('/:userId/devolver/:postoId', async (req, res) => {
     }
 
     // Devolve as bikes do usuário para o posto
-    const bikesToReturn = user.bikes;  // Todas as bikes do usuário
+    const bikesToReturn = user.bikes;  
 
     for (let bike of bikesToReturn) {
         bike.posto = posto;  // Altera o posto da bike para o posto devolvido
-        bike.status = 'disponível';  // Define o status da bike como disponível
-        await bikeRepository.save(bike);  // Salva as alterações
+        bike.status = 'disponível';  
+        await bikeRepository.save(bike); 
     }
 
     // Limpa as bikes do usuário
     user.bikes = [];  // Remove as bikes do usuário
-    await userRepository.save(user);  // Salva as alterações do usuário
+    await userRepository.save(user);  
 
     res.status(200).json({
         message: 'Bikes devolvidas com sucesso!',

@@ -12,13 +12,13 @@ router.post('/login', async (req, res) => {
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOne({
         where: { username },
-        relations: ['role'] // Carrega a role junto com o usuário
+        relations: ['role'] 
     });
 
     if (user && bcrypt.compareSync(password, user.password)) {
         const token = jwt.sign({
             userId: user.id,
-            userRole: user.role.name // Acesse o nome da role aqui
+            userRole: user.role.name 
         }, 'meu_segredo_mais_importante', { expiresIn: '1h' });
 
         res.status(200).json({

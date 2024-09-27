@@ -79,7 +79,7 @@ JsonWebToken
 | --- | --- | --- | --- | --- |
 | Usuários | X |  X  | X | X |
 | Postos | X | X | X | X |
-| Bikes | X | X | - | - |
+| Bikes | X | X | X | X |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
@@ -101,3 +101,7 @@ JsonWebToken
 | POST | /postos|
 | PUT | /postos/:id|
 | DELET | /postos/:id|
+| --- | --- |
+| POST | /bikes|
+| DELET | /bikes/:id|
+

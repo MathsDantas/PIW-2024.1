@@ -11,11 +11,11 @@ export class Bike {
   type!: string; // 'adulto' ou 'infantil'
 
   @ManyToOne(() => User, user => user.bikes, { nullable: true })
-  user!: User | null;  // Relaciona com usuário, pode ser null se estiver no posto
+  user!: User | null;  
 
-  @ManyToOne(() => Posto, posto => posto.bikes, { nullable: true })  // A relação inversa deve estar correta
-  posto!: Posto | null;  // Relaciona com o posto, pode ser null se estiver com o usuário
+  @ManyToOne(() => Posto, posto => posto.bikes, { nullable: true })  
+  posto!: Posto | null; 
   
-  @Column() // Adicione o campo status como coluna
+  @Column() 
   status!: string; 
 }

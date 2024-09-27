@@ -23,5 +23,5 @@ export class User {
   role!: Role;
 
   @OneToMany(() => Bike, bike => bike.user)
-  bikes!: Bike[];  // Relaciona com as bikes do usuário
+  bikes!: Bike[]; 
 }

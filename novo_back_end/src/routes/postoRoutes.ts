@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {   // Lista todos os Postos de Aluguel
     const postoRepository = AppDataSource.getRepository(Posto);
     
     try {
-        const postos = await postoRepository.find();  // Obtém todos os postos do banco de dados
+        const postos = await postoRepository.find();  
 
         res.json({
             data: postos
@@ -50,8 +50,8 @@ router.post('/', async (req, res) => {  // Criar um Posto de Aluguel de Bikes
     for (let i = 0; i < bikesAdu; i++) {
       const newBikeAdu = bikeRepository.create({
         type: 'adulto',
-        status: 'disponível', // Define um status inicial
-        posto: newPosto  // Relaciona a bike ao posto
+        status: 'disponível', 
+        posto: newPosto  
       });
       await bikeRepository.save(newBikeAdu);
     }
@@ -60,16 +60,16 @@ router.post('/', async (req, res) => {  // Criar um Posto de Aluguel de Bikes
     for (let i = 0; i < bikesInf; i++) {
       const newBikeInf = bikeRepository.create({
         type: 'infantil',
-        status: 'disponível', // Define um status inicial
-        posto: newPosto  // Relaciona a bike ao posto
+        status: 'disponível', 
+        posto: newPosto  
       });
       await bikeRepository.save(newBikeInf);
     }
   
-    // Buscar o posto com as bikes incluídas para retornar no response
+    
     const postoComBikes = await postoRepository.findOne({
       where: { id: newPosto.id },
-      relations: ['bikes']  // Garante que as bikes sejam retornadas no posto
+      relations: ['bikes']  
     });
   
     res.status(200).json({
@@ -87,7 +87,7 @@ router.put('/:id', async (req, res) => {   // Atualiza um Posto
     try {
         const posto = await postoRepository.findOne({
             where: { id: parseInt(id) },
-            relations: ['bikes']  // Carrega as bikes relacionadas
+            relations: ['bikes']  
         });
 
         if (!posto) {
@@ -113,14 +113,14 @@ router.put('/:id', async (req, res) => {   // Atualiza um Posto
                     // Atualiza a bike existente
                     bike.type = bikeData.type ?? bike.type;
                     bike.status = bikeData.status ?? bike.status;
-                    bike.posto = posto;  // Atualiza o posto da bike
+                    bike.posto = posto;  
                     await bikeRepository.save(bike);
                 } else {
                     // Cria nova bike se não existir
                     const newBike: Bike = bikeRepository.create({
-                        type: bikeData.type,   // Usa os dados de 'bikeData'
+                        type: bikeData.type,   
                         status: bikeData.status, 
-                        posto: posto            // Atribui o posto diretamente à nova bike
+                        posto: posto           
                     });
                     await bikeRepository.save(newBike);
                 }
@@ -152,7 +152,7 @@ router.delete('/:id', async (req, res) => {  // Deleta um Posto
     
     const posto = await postoRepository.findOne({
         where: { id: parseInt(id) },
-        relations: ['bikes']  // Certifica-se de remover as bikes associadas
+        relations: ['bikes']  
     });
 
     if (!posto) {
@@ -165,7 +165,7 @@ router.delete('/:id', async (req, res) => {  // Deleta um Posto
         });
     }
 
-    // Remove o posto e suas bikes associadas
+    
     await postoRepository.remove(posto);
 
     res.status(200).json({
@@ -181,7 +181,7 @@ router.get('/:id', async (req, res) => {  // Lista uma Unidade dos Postos
 
     const posto = await postoRepository.findOne({
         where: { id: parseInt(id) },
-        relations: ['bikes']  // Adiciona a relação para incluir as bikes
+        relations: ['bikes']  
     });
 
     if (!posto) {
@@ -189,7 +189,7 @@ router.get('/:id', async (req, res) => {  // Lista uma Unidade dos Postos
             error: {
                 status: 404,
                 name: 'NotFound',
-                message: 'Posto not found'  // Corrigido de "User not found" para "Posto not found"
+                message: 'Posto not found'  
             }
         });
     }
@@ -222,7 +222,7 @@ router.post('/:id/alugar', async (req, res) => {
     // Busca o posto pelo ID
     const posto = await postoRepository.findOne({
         where: { id: parseInt(postoId) },
-        relations: ['bikes'] // Inclui as bikes do posto
+        relations: ['bikes'] 
     });
     if (!posto) {
         return res.status(404).json({
@@ -274,14 +274,14 @@ router.post('/:id/alugar', async (req, res) => {
     for (let i = 0; i < bikesAdu; i++) {
         const bike = availableAdultBikes[i];
         bike.status = 'alugada';
-        bike.user = user; // Assume que você tem uma propriedade 'user' na entidade Bike
+        bike.user = user; 
         await bikeRepository.save(bike);
     }
 
     for (let i = 0; i < bikesInf; i++) {
         const bike = availableInfantBikes[i];
         bike.status = 'alugada';
-        bike.user = user; // Assume que você tem uma propriedade 'user' na entidade Bike
+        bike.user = user; 
         await bikeRepository.save(bike);
     }
 
@@ -296,21 +296,7 @@ router.post('/:id/alugar', async (req, res) => {
     });
 });
 
-//teste da api
 
-router.get('/', async (req, res) => {   // Lista todos os Postos de Aluguel
-    const postoRepository = AppDataSource.getRepository(Posto);
-    
-    try {
-        const postos = await postoRepository.find();  // Obtém todos os postos do banco de dados
-
-        res.json({
-            data: postos
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar postos de aluguel' });
-    }
-});
 
 
 

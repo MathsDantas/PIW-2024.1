@@ -1,4 +1,3 @@
-// bikeRoutes.ts
 import { Router } from "express";
 import { AppDataSource } from "../DataSource";
 import { Bike } from "../entity/Bike";

@@ -10,8 +10,8 @@ export class Posto {
   nameUnidade!: string;
 
   @Column()
-  endereco!: string; // Certifique-se de que isso também esteja definido, se for necessário
+  endereco!: string; 
 
-  @OneToMany(() => Bike, bike => bike.posto, { cascade: true })  // Verifique se Bike está correto
+  @OneToMany(() => Bike, bike => bike.posto, { cascade: true }) 
   bikes!: Bike[];  // Um posto tem várias bikes
 }
