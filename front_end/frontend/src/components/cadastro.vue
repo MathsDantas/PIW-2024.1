@@ -100,41 +100,40 @@
     name: '',
     password: '',
     confirmPassword: '',
-    role: 'normal' // Definido como padrão "normal"
+    role: 'normal' 
   });
   
   // Mensagem de erro
   const errorMessage = ref<string>('');
   
-  // Router para navegação após o registro
+  
   const router = useRouter();
   
-  // Função para tratar o submit do formulário
+  
   const onSubmit = async () => {
-    // Validação simples
+    
     if (formData.password !== formData.confirmPassword) {
       errorMessage.value = 'As senhas não coincidem.';
       return;
     }
   
     try {
-      // Fazer a requisição POST para o backend
+      
       const response = await axiosInstance.post('http://localhost:3000/users', {
         name: formData.name,
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        role: formData.role // Enviando a role selecionada
+        role: formData.role 
       });
   
       if (response.status === 200) {
         alert('Conta criada com sucesso!');
-        // Redirecionar para a página de login
         router.push('/login');
       }
       
     } catch (error) {
-      // Tratamento de erros
+      
       console.error(error);
       errorMessage.value = 'Erro ao criar a conta. Tente novamente.';
     } 
@@ -147,7 +146,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Madimi+One&display=swap');
     
   
-    /* Estilos para a página Register */
+    /* Estilos para a página de Registero */
     .register-container {
       font-family: "Inter", sans-serif;
       width: 55%;

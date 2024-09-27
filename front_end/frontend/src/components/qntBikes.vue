@@ -24,14 +24,11 @@
 import { defineComponent, computed, watch, onMounted } from 'vue';
 import axiosInstance from '@/axios';
 import { useRoute } from 'vue-router';
-import { useAuthStore } from '@/store/auth'; // Ajuste o caminho conforme sua estrutura de pastas
+import { useAuthStore } from '@/store/auth';
+import type { Bike } from '@/types/index'; 
 
 
-export interface Bike {
-  id: number;
-  type: string;
-  status: string;
-}
+
 
 export default defineComponent({
   props: {
@@ -58,7 +55,7 @@ export default defineComponent({
     const reloadBikes = async () => {
       try {
         const response = await axiosInstance.get(`http://localhost:3000/postos/${postoId}`);
-        emit('update-bikes', response.data.data.bikes); // Emitindo evento para o pai
+        emit('update-bikes', response.data.data.bikes); 
       } catch (error) {
         console.error('Erro ao recarregar as bikes:', error);
       }
@@ -72,7 +69,7 @@ export default defineComponent({
           status: 'disponível',
           postoId
         });
-        await reloadBikes(); // Recarregando as bikes após adição
+        await reloadBikes(); 
       } catch (error) {
         console.error('Erro ao adicionar bike:', error);
       }
@@ -84,7 +81,7 @@ export default defineComponent({
         const bikeToRemove = props.bikes.find(bike => bike.type === type && bike.status === 'disponível');
         if (bikeToRemove) {
           await axiosInstance.delete(`http://localhost:3000/bikes/${bikeToRemove.id}`);
-          await reloadBikes(); // Recarregando as bikes após remoção
+          await reloadBikes(); 
         } else {
           alert('Nenhuma bike disponível para remoção.');
         }

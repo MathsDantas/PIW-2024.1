@@ -24,14 +24,14 @@ import axiosInstance from '@/axios';
 export default {
   data() {
     return {
-      postos: [], // Array para armazenar os dados dos postos
+      postos: [], 
     };
   },
   mounted() {
-    // Chamada para a API assim que o componente for montado
-    axiosInstance.get('http://localhost:3000/postos')  // URL da API
+    
+    axiosInstance.get('http://localhost:3000/postos')  
       .then(response => {
-        console.log(response.data.data);  // Verificando os dados recebidos
+        console.log(response.data.data);  
         this.postos = response.data.data;
       })
       .catch(error => {

@@ -18,9 +18,7 @@
           <RouterLink to="/" class="nav-link">Home</RouterLink>
           <RouterLink to="/postos" class="nav-link" >Postos de Bikes</RouterLink>
           <RouterLink :to="`/user/${UserId}`" class="nav-link" v-if="authStore.isAuthenticated">Perfil</RouterLink>
-          <!-- Mostrar Login apenas se o usuário não estiver autenticado -->
           <RouterLink v-if="!authStore.isAuthenticated" to="/login" class="nav-link">Login</RouterLink>
-          <!-- Mostrar Logout apenas se o usuário estiver autenticado -->
           <router-link v-if="authStore.isAuthenticated" to="/logout" class="nav-link">Logout</router-link>
         </div>
       </div>
@@ -31,9 +29,9 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import { defineProps } from 'vue';
-import { useAuthStore } from '@/store/auth'; // Importa a store de autenticação
+import { useAuthStore } from '@/store/auth'; 
 
-// Definir prop position com valor padrão "relative"
+
 const props = defineProps({
   position: {
     type: String,
@@ -54,11 +52,11 @@ const UserId = authStore.userId;
 @import url('https://fonts.cdnfonts.com/css/coolvetica-2');
 
 body {
-  padding-top: 56px; /* Ajuste a altura conforme a altura da navbar */
+  padding-top: 56px; 
 }
 
 .navbar {
-  background-color: #F1EC41; /* Cor amarela */
+  background-color: #F1EC41; 
   font-family: "Inter", sans-serif;
   font-weight: bold;
   color: black;

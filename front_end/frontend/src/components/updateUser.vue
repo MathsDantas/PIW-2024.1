@@ -87,12 +87,12 @@
   import { useAuthStore } from '@/store/auth';
   
   const authStore = useAuthStore();
-  authStore.loadAuthData(); // Carrega os dados de autenticação do localStorage
+  authStore.loadAuthData(); 
   const UserId = authStore.userId;
 
   const editionMode = ref(false)
   
-  // Dados reativos do formulário
+  
   const formData = reactive<RegisterForm>({
     email: '',
     username: '',
@@ -102,7 +102,7 @@
     role: ''
   });
   
-  // Mensagem de erro
+  
   const errorMessage = ref<string>('');
   
   // Router para navegação após o registro
@@ -113,14 +113,13 @@
     const response = await axiosInstance.get(`http://localhost:3000/users/${UserId}`);
     const userData = response.data.data;
 
-    // Atribui os valores de userData a formData
+   
     formData.name = userData.name;
     formData.username = userData.username;
     formData.email = userData.email;
-    // Se você quiser usar a role, pode ser assim:
-    // formData.role = userData.role.name; // ou qualquer outra propriedade relevante
+    
 
-    console.log(formData); // Para verificar se os dados estão sendo preenchidos
+    console.log(formData); 
   } catch (error) {
     console.error('Erro ao buscar dados do usuário:', error);
     errorMessage.value = 'Erro ao carregar seus dados. Tente novamente.';
@@ -132,7 +131,7 @@ function toogleEdit() {
   editionMode.value = !editionMode.value
 }
 
-  // Função para tratar o submit do formulário
+  
 const onSubmit = async () => {
   if (formData.password !== formData.confirmPassword) {
     errorMessage.value = 'As senhas não coincidem.';
@@ -149,8 +148,8 @@ const onSubmit = async () => {
 
     if (response.status === 200) {
       alert('Dados Atualizados com sucesso!');
-      // Recarrega os dados do usuário e desabilita o modo de edição
-      await fetchUserData(); // Recarrega os dados do usuário
+      
+      await fetchUserData(); 
       editionMode.value = false; // Desabilita o modo de edição
     }
     
@@ -160,7 +159,7 @@ const onSubmit = async () => {
   }
 };
 
-  // Chama a função para buscar os dados do usuário quando o componente é montado
+  
   onMounted(fetchUserData);
 </script>
   

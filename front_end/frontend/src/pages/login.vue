@@ -50,7 +50,7 @@
 
 <script>
 import axiosInstance from '@/axios';
-import { useAuthStore } from '@/store/auth'; // Adicione esta linha
+import { useAuthStore } from '@/store/auth'; 
 
 export default {
   data() {
@@ -96,17 +96,17 @@ export default {
   width: 100vw; 
   height: 100vh; 
   align-items: center;
-  justify-content: center; /* Isso centraliza o conteúdo horizontalmente */
+  justify-content: center; 
   
 }
 
 .foto{
   width: 120vh;
   height: 100vh; 
-  background-image: url('../assets/bikes_amarelas.jpg'); /* Caminho relativo para a imagem */
-  background-size: cover; /* A imagem cobrirá toda a área da div */
-  background-position: center; /* Centraliza a imagem */
-  background-repeat: no-repeat; /* Evita a repetição da imagem */
+  background-image: url('../assets/bikes_amarelas.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
   }
 
 
@@ -118,7 +118,7 @@ export default {
   width: 400px;
   font-size: 25px;
   font-family: "Inter", sans-serif;
-  margin: 0 auto; /* Centraliza o container verticalmente */
+  margin: 0 auto; 
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;

@@ -25,7 +25,7 @@ import { useAuthStore } from '@/store/auth';
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Ocupa toda a altura da visualização */
-  width: 100%; /* Garante que a largura seja total */
+  height: 100vh; 
+  width: 100%; 
 }
 </style>

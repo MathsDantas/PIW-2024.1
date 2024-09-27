@@ -64,32 +64,32 @@ import axiosInstance from '@/axios';
 import { useRoute } from 'vue-router';
 import type { Bike, User } from '@/types/index';
 
-// Receber props com tipagem correta
+
 const props = defineProps<{
   users: User[];
   askToDelete: (userId: number) => void;
-  onUpdateUsers: () => void; // Adicionei uma prop para atualizar os usuários
+  onUpdateUsers: () => void; 
 }>();
 
-// Declarar o sistema de emissão de eventos
+
 const emit = defineEmits(['bikesUpdated']);
 
 const route = useRoute();
 const postoId = route.params.id;
 
-// Função para contar bikes de um tipo específico
+
 const countBikes = (bikes: Bike[], type: string) => {
   return bikes.filter(bike => bike.type === type).length;
 };
 
-// Função para verificar a disponibilidade de bikes no backend
+
 const isBikeAvailable = async (type: string) => {
   const availableBikes = await fetch(`/api/bikes/available?type=${type}`)
     .then(res => res.json());
   return availableBikes.length > 0;
 };
 
-// Função para alugar bikes
+
 const rentBike = async (userId: number, type: string) => {
   const data = {
     userId,
@@ -101,13 +101,13 @@ const rentBike = async (userId: number, type: string) => {
     await axiosInstance.post(`http://localhost:3000/postos/${postoId}/alugar`, data);
     alert(`${type === 'adulto' ? 'Bike adulta' : 'Bike infantil'} alugada com sucesso!`);
     
-    // Atualiza a lista de usuários após alugar
+    
     props.onUpdateUsers();
 
     
     const updatedBikes = await fetchUpdatedBikes(); 
 
-    // Emitir o evento com as bikes atualizadas
+    
     emit('bikesUpdated', updatedBikes);
   } catch (error) {
     console.error('Erro ao alugar bike:', error);
@@ -123,13 +123,13 @@ const returnAllBikes = async (userId: number) => {
     await axiosInstance.post(url);
     alert('Bikes devolvidas com sucesso!');
     
-    // Atualiza a lista de usuários após devolver
+    
     props.onUpdateUsers();
     
     
     const updatedBikes = await fetchUpdatedBikes(); 
 
-    // Emitir o evento com as bikes atualizadas
+    
     emit('bikesUpdated', updatedBikes);
   } catch (error) {
     console.error('Erro ao devolver bikes:', error);
@@ -137,11 +137,11 @@ const returnAllBikes = async (userId: number) => {
   }
 };
 
-// Função hipotética para buscar bikes atualizadas
+
 async function fetchUpdatedBikes() {
   try {
     const response = await axiosInstance.get(`http://localhost:3000/postos/${postoId}`);
-    return response.data.data.bikes; // Retorna a lista de bikes atualizada
+    return response.data.data.bikes; 
   } catch (error) {
     console.error('Erro ao buscar bikes atualizadas:', error);
     return [];

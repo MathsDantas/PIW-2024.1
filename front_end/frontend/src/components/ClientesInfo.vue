@@ -22,7 +22,7 @@
   </script>
   <style scoped>
   .clientes-info-section {
-    /* Estilo específico para informações do cliente */
+    
     padding: 20px;
     border: 1px solid #ccc;
     background-color: yellow;

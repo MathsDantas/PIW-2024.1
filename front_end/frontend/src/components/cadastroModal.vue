@@ -60,7 +60,7 @@
               />
             </div>
   
-            <!-- Campo de seleção de role -->
+            
             <div class="form-group">
               <label for="role">Escolha seu tipo de conta:</label>
               <select v-model="formData.role" id="role" required>
@@ -88,34 +88,32 @@
   import { defineEmits } from 'vue';
   import type { RegisterForm } from '@/types/index';
   
-  // Definir os eventos que este componente pode emitir
+ 
   const emit = defineEmits(['close', 'userCreated']);
   
  
   
-  // Dados reativos do formulário
+ 
   const formData = reactive<RegisterForm>({
     email: '',
     username: '',
     name: '',
     password: '',
     confirmPassword: '',
-    role: 'normal' // Valor padrão "normal"
+    role: 'normal' 
   });
   
-  // Mensagem de erro
+ 
   const errorMessage = ref<string>('');
   
-  // Função para tratar o submit do formulário
+  
   const onSubmit = async () => {
-    // Validação simples de confirmação de senha
     if (formData.password !== formData.confirmPassword) {
       errorMessage.value = 'As senhas não coincidem.';
       return;
     }
   
     try {
-      // Requisição POST para criar o usuário
       const response = await axiosInstance.post('http://localhost:3000/users', {
         name: formData.name,
         username: formData.username,
@@ -126,7 +124,6 @@
   
       if (response.status === 200) {
         alert('Conta criada com sucesso!');
-        // Emitir o evento para fechar o modal
         emit('userCreated');
         emit('close');
       }
@@ -136,7 +133,7 @@
     }
   };
   
-  // Função para fechar o modal
+
   const closeModal = () => {
     emit('close');
   };
@@ -163,7 +160,7 @@
        display: flex;
        justify-content: center;
        align-items: center;
-       background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+       background-color: rgba(0, 0, 0, 0.5); 
     }
   
     .modal-content {

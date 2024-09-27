@@ -22,10 +22,10 @@
 
   .home {
   height: 100vh;
-  background-image: url('@/assets/background.png'); /* Importa a imagem */
-  background-size: cover; /* Ajusta o tamanho da imagem para cobrir todo o fundo */
-  background-position: center; /* Centraliza a imagem */
-  background-repeat: no-repeat; /* Evita a repetição da imagem */
+  background-image: url('@/assets/background.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
   }
 
   .titulo {
@@ -36,10 +36,10 @@
 
 .home {
   display: flex;
-  justify-content: center; /* Alinha horizontalmente no centro */
-  align-items: center; /* Alinha verticalmente no centro */
-  height: 100vh; /* Garante que o container ocupe toda a altura da viewport */
-  text-align: center; /* Centraliza o texto dentro do container */
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  text-align: center; 
 }
 
   </style>
