@@ -25,6 +25,19 @@ router.post('/', async (req, res) => {  // Criar Usuário
     const userRepository = AppDataSource.getRepository(User);
     const roleRepository = AppDataSource.getRepository(Role);
 
+    // Verifica se o username já existe no banco de dados
+    const existingUser = await userRepository.findOne({ where: { username } });
+
+    if (existingUser) {
+        return res.status(400).json({
+            error: {
+                status: 400,
+                name: 'Validation Error',
+                message: 'Nome de usuário já está em uso'
+            }
+        });
+    }
+
     let roleInDB = await roleRepository.findOne({ where: { name: role } });
 
     if (!roleInDB) {
@@ -49,8 +62,6 @@ router.post('/', async (req, res) => {  // Criar Usuário
 });
 
 router.use(authenticateJWT) // Descomente para bloquear/desbloquear todas as rotas
-
-
 
 router.get('/', async (req, res) => {   // Lista todos os Usuários
     const userRepository = AppDataSource.getRepository(User);
@@ -116,7 +127,6 @@ router.delete('/:id', async (req, res) => {  // Deleta um usuário
     });
 });
 
-
 router.put('/:id', async (req, res) => {   // Atualiza um usuário
     const { id } = req.params;
     const { name, username, email, password, role } = req.body;
@@ -147,8 +157,8 @@ router.put('/:id', async (req, res) => {   // Atualiza um usuário
     }
 
     if (name) user.name = name;
-if (username) user.username = username;
-if (email) user.email = email;
+    if (username) user.username = username;
+    if (email) user.email = email;
 
     if (password) {
         user.password = bcrypt.hashSync(password, 10);  // Atualiza a senha somente se um novo valor for fornecido
@@ -219,7 +229,5 @@ router.post('/:userId/devolver/:postoId', async (req, res) => {
         posto,
     });
 });
-
-
 
 export default router;
