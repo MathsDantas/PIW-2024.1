@@ -17,6 +17,7 @@
         <div class="navbar-nav ms-auto">
           <RouterLink to="/" class="nav-link">Home</RouterLink>
           <RouterLink to="/postos" class="nav-link" >Postos de Bikes</RouterLink>
+          <RouterLink :to="`/user/${UserId}`" class="nav-link" v-if="authStore.isAuthenticated">Perfil</RouterLink>
           <!-- Mostrar Login apenas se o usuário não estiver autenticado -->
           <RouterLink v-if="!authStore.isAuthenticated" to="/login" class="nav-link">Login</RouterLink>
           <!-- Mostrar Logout apenas se o usuário estiver autenticado -->
@@ -40,9 +41,12 @@ const props = defineProps({
   }
 });
 
+
+
 // Carrega o estado de autenticação ao inicializar o componente
 const authStore = useAuthStore();
 authStore.loadAuthData(); // Carrega os dados de autenticação do localStorage
+const UserId = authStore.userId; // Acesse userId da store
 </script>
 
 <style scoped>

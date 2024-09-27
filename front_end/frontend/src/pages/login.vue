@@ -70,9 +70,9 @@ export default {
         });
 
         console.log("Resposta do login:", response.data);
-        const { jwt, role } = response.data.data;
+        const { jwt, role, id } = response.data.data;
         const authStore = useAuthStore();
-        authStore.setAuthData(jwt, role); // Armazena os dados na store
+        authStore.setAuthData(jwt, role, id); // Armazena os dados na store
 
         this.$router.push('/postos'); // Redireciona para onde quiser
       } catch (error) {

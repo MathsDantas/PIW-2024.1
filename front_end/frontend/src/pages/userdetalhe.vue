@@ -1,22 +1,20 @@
 <template>
-    <h1>A</h1> <br />
-
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
-    <h1>A</h1> <br />
+    <div class="page" >
+        <div class="titulo">
+            <h1>Seu Perfil</h1>
+            <h3>Suas informações pessoais.</h3>
+        </div>
+        <div class="dados">
+            <UpdateUser />
+        </div>
+    </div>
 </template>
 
-<script lang="ts">
+<script setup="ts">
+import UpdateUser from '@/components/updateUser.vue';
+
+
+
 </script>
 
 <style>
