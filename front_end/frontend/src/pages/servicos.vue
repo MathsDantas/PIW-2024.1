@@ -7,7 +7,7 @@ import { ref, onMounted, watch } from 'vue';
 import type { User, Bike, Unidade } from '@/types/index';
 import { useAuthStore } from '@/store/auth';
 import CadastroModal from '@/components/cadastroModal.vue';
-import router from '@/router';
+import { useRoute } from 'vue-router';
 
 
 
@@ -17,10 +17,12 @@ const unidade = ref<Unidade | null>(null);
 const users = ref<User[]>([]);
 const showModal = ref(false);
 const authStore = useAuthStore();
+const route = useRoute();
 
 async function fetchUnidadeData() {
   try {
-    const response = await axiosInstance.get(`/postos/${window.location.pathname.split('/')[2]}`);
+    const postoId = route.params.id;
+    const response = await axiosInstance.get(`http://localhost:3000/postos/${postoId}`);
     
     
     unidade.value = response.data.data;
