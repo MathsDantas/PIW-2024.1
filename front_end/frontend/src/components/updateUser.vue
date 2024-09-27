@@ -1,97 +1,96 @@
 <template>
     <div class="page">
       <div class="register-container">
-        <h2 class="fonte mb-4">Criar Conta</h2>
+        <h2 class="fonte mb-4">Atualizar seus dados cadastrais:</h2>
         <form @submit.prevent="onSubmit">
           <div class="form-group">
-            <label for="name">Seu Nome:</label>
+            <label for="name">Atualizar Nome:</label>
             <input
               type="text"
               v-model="formData.name"
               id="name"
               required
               placeholder="Digite seu nome"
+              :disabled="!editionMode"
             />
           </div>
   
           <div class="form-group">
-            <label for="username">User Name:</label>
+            <label for="username">Atualziar User Name:</label>
             <input
               type="text"
               v-model="formData.username"
               id="username"
               required
               placeholder="Digite seu username"
+              :disabled="!editionMode"
             />
           </div>
   
           <div class="form-group">
-            <label for="email">E-mail:</label>
+            <label for="email">Atualizar E-mail:</label>
             <input
               type="email"
               v-model="formData.email"
               id="email"
               required
               placeholder="Digite seu e-mail"
+              :disabled="!editionMode"
             />
           </div>
   
           <div class="form-group">
-            <label for="password">Senha:</label>
+            <label for="password">Atualizar Senha (opicional):</label>
             <input
               type="password"
               v-model="formData.password"
               id="password"
-              required
+              
               placeholder="Digite sua senha"
+              :disabled="!editionMode"
             />
           </div>
   
           <div class="form-group">
-            <label for="confirm-password">Confirmar Senha:</label>
+            <label for="confirm-password">Confirmar atualização de Senha (opicional):</label>
             <input
               type="password"
               v-model="formData.confirmPassword"
               id="confirm-password"
-              required
+              
               placeholder="Confirme sua senha"
+              :disabled="!editionMode"
             />
           </div>
   
-          <!-- Adicionando o campo de seleção de role -->
           <div class="form-group">
-            <label for="role">Escolha seu tipo de conta:</label>
-            <select v-model="formData.role" id="role" required>
-              <option value="normal">Normal</option>
-              <option value="admin">Admin</option>
-            </select>
+            <button v-if="editionMode" type="submit">Atualizar Dados</button>
           </div>
-  
+
           <div class="form-group">
-            <button type="submit">Criar Conta</button>
+            <button v-if="!editionMode" @click="toogleEdit" >Habilitar Edição</button>
           </div>
         </form>
   
         <div v-if="errorMessage" class="error-message">
           {{ errorMessage }}
         </div>
-  
-        <div class="login-link">
-          <p>Já tem uma conta?</p>
-          <router-link to="/login">Fazer login</router-link>
-        </div>
       </div>
     </div>
 </template>
   
-    
 <script setup lang="ts">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import axios from 'axios';
   import type { RegisterForm } from '@/types/index';
+  import { useAuthStore } from '@/store/auth';
   
- 
+  const authStore = useAuthStore();
+  authStore.loadAuthData(); // Carrega os dados de autenticação do localStorage
+  const UserId = authStore.userId;
+
+  const editionMode = ref(false)
   
   // Dados reativos do formulário
   const formData = reactive<RegisterForm>({
@@ -100,7 +99,7 @@
     name: '',
     password: '',
     confirmPassword: '',
-    role: 'normal' // Definido como padrão "normal"
+    role: ''
   });
   
   // Mensagem de erro
@@ -109,36 +108,60 @@
   // Router para navegação após o registro
   const router = useRouter();
   
+  const fetchUserData = async () => {
+  try {
+    const response = await axios.get(`http://localhost:3000/users/${UserId}`);
+    const userData = response.data.data;
+
+    // Atribui os valores de userData a formData
+    formData.name = userData.name;
+    formData.username = userData.username;
+    formData.email = userData.email;
+    // Se você quiser usar a role, pode ser assim:
+    // formData.role = userData.role.name; // ou qualquer outra propriedade relevante
+
+    console.log(formData); // Para verificar se os dados estão sendo preenchidos
+  } catch (error) {
+    console.error('Erro ao buscar dados do usuário:', error);
+    errorMessage.value = 'Erro ao carregar seus dados. Tente novamente.';
+  }
+};
+
+
+function toogleEdit() {
+  editionMode.value = !editionMode.value
+}
+
   // Função para tratar o submit do formulário
-  const onSubmit = async () => {
-    // Validação simples
-    if (formData.password !== formData.confirmPassword) {
-      errorMessage.value = 'As senhas não coincidem.';
-      return;
+const onSubmit = async () => {
+  if (formData.password !== formData.confirmPassword) {
+    errorMessage.value = 'As senhas não coincidem.';
+    return;
+  }
+
+  try {
+    const response = await axios.put(`http://localhost:3000/users/${UserId}`, {
+      name: formData.name,
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (response.status === 200) {
+      alert('Dados Atualizados com sucesso!');
+      // Recarrega os dados do usuário e desabilita o modo de edição
+      await fetchUserData(); // Recarrega os dados do usuário
+      editionMode.value = false; // Desabilita o modo de edição
     }
-  
-    try {
-      // Fazer a requisição POST para o backend
-      const response = await axios.put(`http://localhost:3000/users/`, {
-        name: formData.name,
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role // Enviando a role selecionada
-      });
-  
-      if (response.status === 200) {
-        alert('Conta criada com sucesso!');
-        // Redirecionar para a página de login
-        router.push('/login');
-      }
-      
-    } catch (error) {
-      // Tratamento de erros
-      console.error(error);
-      errorMessage.value = 'Erro ao criar a conta. Tente novamente.';
-    } 
-  };
+    
+  } catch (error) {
+    console.error(error);
+    errorMessage.value = 'Erro ao atualizar suas informações. Tente novamente.';
+  }
+};
+
+  // Chama a função para buscar os dados do usuário quando o componente é montado
+  onMounted(fetchUserData);
 </script>
   
     
@@ -153,7 +176,7 @@
       width: 55%;
       height: 80%;
       margin: 5px;
-      margin-top: 3%;
+      margin-top: 1%;
       padding: 20px;
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -162,6 +185,7 @@
     
     .form-group {
       margin-bottom: 16px;
+      font-weight: bold;
     }
     
     .form-group label {
@@ -173,6 +197,7 @@
       width: 100%;
       padding: 8px;
       font-size: 14px;
+      font-weight: 400;
       border: 1px solid #ffffff;
       border-radius: 4px;
     }
